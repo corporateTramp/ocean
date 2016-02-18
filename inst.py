@@ -7,7 +7,7 @@ import requests
 import html5lib
 from bs4 import BeautifulSoup
 import time
-import collections
+# import collections
 
 def collect():
 	pages  = []
@@ -24,7 +24,7 @@ def collect():
 	return pages
 	
 def convert(data):
-    if isinstance(data, basestring):
+    if isinstance(data, unicode):
         return data.encode('utf-8',"replace")
     elif isinstance(data, collections.Mapping):
         return dict(map(convert, data.iteritems()))
@@ -69,7 +69,7 @@ def instagram(urls):
 						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text
 						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text
 						content_type = "photo"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 					except:
 						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text
 						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
