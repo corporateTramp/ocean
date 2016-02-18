@@ -38,26 +38,29 @@ def instagram(urls):
 		print desc.text
 		print posts.text
 		print followers.text
-			
-		for x in range (1,5):
-			for i in range(1,4):
-				pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
-				hover = ActionChains(driver).move_to_element(pic)
-				hover.perform()
-				try:
-					likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i))
-					comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i))
-					type = "Photo"
-					alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
-				except:
-					likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i))
-					comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i))
-					type = "Video"
-					alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
-				print likes.text
-				print comments.text
-				print type
-				print alt.get_attribute("alt")
+		
+		try:
+			for x in range (1,5):
+				for i in range(1,4):
+					pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
+					hover = ActionChains(driver).move_to_element(pic)
+					hover.perform()
+					try:
+						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i))
+						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i))
+						type = "Photo"
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
+					except:
+						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i))
+						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i))
+						type = "Video"
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
+					print likes.text
+					print comments.text
+					print type
+					print alt.get_attribute("alt")
+		except NoSuchElementException:
+					print "invisible page"
 				
 		driver.quit()
 				
