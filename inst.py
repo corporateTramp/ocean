@@ -17,6 +17,8 @@ def collect():
 		page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 		pages.append(page)
 	
+	print "collection is finished"
+	
 	return pages
 
 
@@ -28,6 +30,8 @@ def instagram(urls):
 	
 	for url in urls[:10]:
 		# time.sleep(7)
+		print url
+		
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
