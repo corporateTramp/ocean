@@ -3,6 +3,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import requests
 import html5lib
 from bs4 import BeautifulSoup
+import time
 
 def collect():
 	pages  = []
@@ -21,6 +22,7 @@ def collect():
 def instagram(urls):
 
 	for url in urls:
+		time.sleep(7)
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 
@@ -54,7 +56,7 @@ def instagram(urls):
 				print likes.text
 				print comments.text
 				print type
-				print alt.get_attribute("alt").encode("cp866 ","replace")
+				print alt.get_attribute("alt")
 
 urls = collect()			
 instagram(urls)
