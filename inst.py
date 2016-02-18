@@ -25,7 +25,7 @@ def collect():
 	
 def convert(data):
     if isinstance(data, basestring):
-        return str(data)
+        return data.encode('utf-8',"replace")
     elif isinstance(data, collections.Mapping):
         return dict(map(convert, data.iteritems()))
     elif isinstance(data, collections.Iterable):
