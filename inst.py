@@ -7,7 +7,7 @@ import requests
 import html5lib
 from bs4 import BeautifulSoup
 import time
-import collSections
+import collections
 
 def collect():
 	pages  = []
