@@ -1,3 +1,6 @@
+# установить phantomjs
+# phantomjs --disk-cache=[true|false]
+
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 import requests
@@ -59,4 +62,4 @@ def instagram(urls):
 				print alt.get_attribute("alt")
 
 urls = collect()			
-instagram(urls)
+instagram(['https://www.instagram.com/buzova86/'])
