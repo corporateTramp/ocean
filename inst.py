@@ -31,6 +31,18 @@ def instagram(urls):
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
+		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
+		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
+		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
+		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
+		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
+		
+		accounts_add = {"name": name, "description": description, "private": private}
+		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		
+		accounts.append(accounts_add)
+		scan_sessions.append(scan_sessions_add)
+		
 		try:
 			for x in range (1,5):
 				for i in range(1,4):
@@ -54,18 +66,7 @@ def instagram(urls):
 
 		except NoSuchElementException:
 			private = True
-					
-		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
-		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
-		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
-		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
-		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
 		
-		accounts_add = {"name": name, "description": description, "private": private}
-		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		accounts.append(accounts_add)
-		scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
 		
