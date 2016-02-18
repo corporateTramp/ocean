@@ -5,8 +5,9 @@
 [INFO  - 2016-02-18T19:31:21.878Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 30d83970-d676-11e5-a4b7-29e5c48bb701
 [INFO  - 2016-02-18T19:33:50.801Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
 [INFO  - 2016-02-18T19:38:50.801Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
-[INFO  - 2016-02-18T19:37:00.631Z] SessionManagerReqHan[INFO  - 2016-02-18T19:41:21.889Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-02-18T19:43:50.801Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-02-18T19:42:00.670Z] SessionManagerReqHan[INFO  - 2016-02-18T19:46:21.889Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
 d - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
-[INFO  - 2016-02-18T19:39:36.845Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-02-18T19:44:36.844Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
 s - Asynchronous Sessions clean-up phase starting NOW
-[INFO  - 2016-02-18T19:40:56.827Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-02-18T19:45:56.827Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW

@@ -1,5 +1,22 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+import requests
+import html5lib
+from bs4 import BeautifulSoup
+
+def collect():
+	pages  = []
+	r = requests.get('http://www.t30p.ru/Instagram.aspx')
+	soup = BeautifulSoup(r.text, 'html5lib')
+	# print r.text
+	
+	for tag in soup.find_all('td',class_="name"):
+		page = tag.a.get('href')
+		page = str(page[(page.rfind('/')+1):])
+		pages.append(page)
+	
+	return pages
+
 
 def instagram(urls):
 
@@ -39,4 +56,4 @@ def instagram(urls):
 				print type
 				print alt.get_attribute("alt").encode("cp866 ","replace")
 				
-instagram(['http://instagram.com/umnpics/'])
+instagram(collect)
