@@ -89,11 +89,11 @@ def instagram(urls):
 		scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
-		time.sleep(10)
+		time.sleep(5)
 	
-	convert(accounts)
-	convert(scan_sessions)
-	convert(content_params)
+	accounts = convert(accounts)
+	scan_sessions = convert(scan_sessions)
+	content_params = convert(content_params)
 	
 	print accounts, scan_sessions, content_params
 			
