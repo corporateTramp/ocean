@@ -1,5 +1,3 @@
-# установить phantomjs
-# phantomjs --disk-cache=[true|false]
 
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
