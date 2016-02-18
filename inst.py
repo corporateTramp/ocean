@@ -5,7 +5,7 @@ def instagram(urls):
 
 	for url in urls:
 		driver = webdriver.PhantomJS()
-		driver.get('http://instagram.com/umnpics/')
+		driver.get(url)
 
 
 		user = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1")
@@ -38,3 +38,5 @@ def instagram(urls):
 				print comments.text
 				print type
 				print alt.get_attribute("alt").encode("cp866 ","replace")
+				
+instagram(['http://instagram.com/umnpics/'])
