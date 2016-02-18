@@ -23,15 +23,11 @@ def collect():
 	
 	return pages
 	
-def convert(data):
-    if isinstance(data, unicode):
-        return data.encode('utf-8',"replace")
-    elif isinstance(data, collections.Mapping):
-        return dict(map(convert, data.iteritems()))
-    elif isinstance(data, collections.Iterable):
-        return type(data)(map(convert, data))
-    else:
-        return data	
+def convert_lists(data):
+    for iter in data:
+		for val in iter.values():
+			if isinstance(data, unicode):
+				val = val.encode('utf-8',"replace")
 
 
 def instagram(urls):
@@ -91,9 +87,9 @@ def instagram(urls):
 		driver.quit()
 		time.sleep(5)
 	
-	accounts = convert(accounts)
-	scan_sessions = convert(scan_sessions)
-	content_params = convert(content_params)
+	accounts = convert_lists(accounts)
+	scan_sessions = convert_lists(scan_sessions)
+	content_params = convert_lists(content_params)
 	
 	print accounts, scan_sessions, content_params
 			
