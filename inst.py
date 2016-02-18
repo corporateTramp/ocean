@@ -5,6 +5,7 @@ import requests
 import html5lib
 from bs4 import BeautifulSoup
 import time
+from selenium.common.exceptions import NoSuchElementException
 
 def collect():
 	pages  = []
