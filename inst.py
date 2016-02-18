@@ -12,7 +12,7 @@ def collect():
 	
 	for tag in soup.find_all('td',class_="name"):
 		page = tag.a.get('href')
-		page = str(page[(page.rfind('/')+1):])
+		page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 		pages.append(page)
 	
 	return pages
@@ -55,5 +55,6 @@ def instagram(urls):
 				print comments.text
 				print type
 				print alt.get_attribute("alt").encode("cp866 ","replace")
-				
-instagram(collect)
+
+urls = collect()			
+instagram(urls)
