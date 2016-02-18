@@ -59,7 +59,7 @@ def instagram(urls):
 				print type
 				print alt.get_attribute("alt")
 				
-		driver.close()
+		driver.quit()
 				
 
 urls = collect()			
