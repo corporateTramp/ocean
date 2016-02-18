@@ -73,8 +73,8 @@ def instagram(urls):
 		# accounts_add = {"name": name, "description": description, "private": private}
 		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
-		accounts.append(accounts_add)
-		scan_sessions.append(scan_sessions_add)
+		# accounts.append(accounts_add)
+		# scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
 		
