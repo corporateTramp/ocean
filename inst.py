@@ -37,11 +37,6 @@ def instagram(urls):
 		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
 		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
 		
-		accounts_add = {"name": name, "description": description, "private": private}
-		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		accounts.append(accounts_add)
-		scan_sessions.append(scan_sessions_add)
 		
 		try:
 			for x in range (1,5):
@@ -67,6 +62,11 @@ def instagram(urls):
 		except NoSuchElementException:
 			private = True
 		
+		accounts_add = {"name": name, "description": description, "private": private}
+		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		
+		accounts.append(accounts_add)
+		scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
 		
