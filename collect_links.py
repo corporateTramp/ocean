@@ -1,12 +1,12 @@
 import requests
-import lxml
+# import lxml
 import html5lib
 from bs4 import BeautifulSoup
 
 def collect():
 	pages  = []
 	r = requests.get('http://www.t30p.ru/Instagram.aspx')
-	soup = BeautifulSoup(r.text, 'lxml')
+	soup = BeautifulSoup(r.text, 'html5lib')
 	# print r.text
 	
 	for tag in soup.find_all('td',class_="name"):
