@@ -2,7 +2,7 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import requests
 import html5lib
 from bs4 import BeautifulSoup
@@ -25,8 +25,8 @@ def collect():
 
 def instagram(urls):
 	
-	dcap = dict(DesiredCapabilities.PHANTOMJS)
-	dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
+	# dcap = dict(DesiredCapabilities.PHANTOMJS)
+	# dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
 	
 	accounts =[]
 	scan_sessions = []
@@ -36,14 +36,15 @@ def instagram(urls):
 		time.sleep(10)
 		print url
 		
-		driver = webdriver.PhantomJS(desired_capabilities=dcap)
+		# driver = webdriver.PhantomJS(desired_capabilities=dcap)
+		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
-		# name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text.encode("utf-8","replace")
-		# description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text.encode("utf-8","replace")
-		# publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text.encode("utf-8","replace")
-		# subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text.encode("utf-8","replace")
-		# subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text.encode("utf-8","replace")
+		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text.encode("utf-8","replace")
+		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text.encode("utf-8","replace")
+		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text.encode("utf-8","replace")
+		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text.encode("utf-8","replace")
+		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text.encode("utf-8","replace")
 		
 		
 		try:
@@ -70,11 +71,11 @@ def instagram(urls):
 		except NoSuchElementException:
 			private = True
 		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		accounts_add = {"name": name, "description": description, "private": private}
+		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
-		# accounts.append(accounts_add)
-		# scan_sessions.append(scan_sessions_add)
+		accounts.append(accounts_add)
+		scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
 		
