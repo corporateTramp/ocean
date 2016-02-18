@@ -21,6 +21,16 @@ def collect():
 	print "collection is finished"
 	
 	return pages
+	
+def convert(data):
+    if isinstance(data, basestring):
+        return str(data)
+    elif isinstance(data, collections.Mapping):
+        return dict(map(convert, data.iteritems()))
+    elif isinstance(data, collections.Iterable):
+        return type(data)(map(convert, data))
+    else:
+        return data	
 
 
 def instagram(urls):
@@ -32,19 +42,19 @@ def instagram(urls):
 	scan_sessions = []
 	content_params =[]
 	
-	for url in urls[:10]:
-		time.sleep(10)
+	for url in urls[:3]:
+
 		print url
 		
 		# driver = webdriver.PhantomJS(desired_capabilities=dcap)
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
-		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text.encode("utf-8","replace")
-		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text.encode("utf-8","replace")
-		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text.encode("utf-8","replace")
-		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text.encode("utf-8","replace")
-		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text.encode("utf-8","replace")
+		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
+		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
+		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
+		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
+		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
 		
 		
 		try:
@@ -55,15 +65,15 @@ def instagram(urls):
 					hover = ActionChains(driver).move_to_element(pic)
 					hover.perform()
 					try:
-						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text.encode("utf-8","replace")
-						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text.encode("utf-8","replace")
+						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text
+						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text
 						content_type = "photo"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).encode("utf-8","replace")
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
 					except:
-						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text.encode("utf-8","replace")
-						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text.encode("utf-8","replace")
+						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text
+						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
 						content_type = "video"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt").encode("utf-8","replace")
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 						
 					content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
 					content_params.append(content_params_add)
@@ -78,10 +88,14 @@ def instagram(urls):
 		scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
-		
+		time.sleep(10)
+	
+	convert(accounts)
+	convert(scan_sessions)
+	convert(content_params)
+	
 	print accounts, scan_sessions, content_params
-		
-		
+			
 				
 
 urls = collect()			
