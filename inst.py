@@ -1,11 +1,12 @@
 
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import requests
 import html5lib
 from bs4 import BeautifulSoup
 import time
-from selenium.common.exceptions import NoSuchElementException
 
 def collect():
 	pages  = []
@@ -23,16 +24,19 @@ def collect():
 
 
 def instagram(urls):
+	dcap = dict(DesiredCapabilities.PHANTOMJS)
+	dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
 	
+
 	accounts =[]
 	scan_sessions = []
 	content_params =[]
 	
 	for url in urls[:10]:
-		# time.sleep(7)
+		time.sleep(10)
 		print url
 		
-		driver = webdriver.PhantomJS()
+		driver = webdriver.PhantomJS(desired_capabilities=dcap)
 		driver.get(url)
 		
 		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text.encode("utf-8","replace")
