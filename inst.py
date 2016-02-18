@@ -31,11 +31,11 @@ def instagram(urls):
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
-		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
-		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
-		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
-		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
-		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
+		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text.encode("utf-8","replace")
+		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text.encode("utf-8","replace")
+		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text.encode("utf-8","replace")
+		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text.encode("utf-8","replace")
+		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text.encode("utf-8","replace")
 		
 		
 		try:
@@ -46,15 +46,15 @@ def instagram(urls):
 					hover = ActionChains(driver).move_to_element(pic)
 					hover.perform()
 					try:
-						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text
-						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text
+						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text.encode("utf-8","replace")
+						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text.encode("utf-8","replace")
 						content_type = "photo"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i))
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).encode("utf-8","replace")
 					except:
-						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text
-						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
+						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text.encode("utf-8","replace")
+						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text.encode("utf-8","replace")
 						content_type = "video"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt").encode("utf-8","replace")
 						
 					content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
 					content_params.append(content_params_add)
