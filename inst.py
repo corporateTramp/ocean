@@ -49,11 +49,11 @@ def instagram(urls):
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 						
-				content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
-				content_params.append(content_params_add)
+					content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
+					content_params.append(content_params_add)
 
 		except NoSuchElementException:
-					private = True
+			private = True
 					
 		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
 		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
