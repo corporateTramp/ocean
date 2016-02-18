@@ -23,7 +23,7 @@ def collect():
 def instagram(urls):
 
 	for url in urls:
-		time.sleep(7)
+		# time.sleep(7)
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 
@@ -58,6 +58,9 @@ def instagram(urls):
 				print comments.text
 				print type
 				print alt.get_attribute("alt")
+				
+		driver.close()
+				
 
 urls = collect()			
-instagram(['https://www.instagram.com/buzova86/'])
+instagram(urls)
