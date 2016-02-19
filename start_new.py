@@ -48,6 +48,7 @@ def strInt(text):
 def instagram(urls):
 	
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
+	count = 1
 	
 	for url in urls:
 	
@@ -99,7 +100,7 @@ def instagram(urls):
 		cur.close()
 				
 		##mapping account id and updating scan_sessions	
-		account_id = url+1
+		account_id = count
 		scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
 		cur = conn.cursor()
 		cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
@@ -108,7 +109,7 @@ def instagram(urls):
 		
 		
 		##mapping scan_id
-		scan_session_id = url+1
+		scan_session_id = count
 				
 		##adding content params
 		content_params_add = [tuple(l) for l in content_params_add]
@@ -118,6 +119,7 @@ def instagram(urls):
 		cur.close()
 
 		driver.quit()
+		count += 1
 		time.sleep(10)
 	
 	conn.close()
