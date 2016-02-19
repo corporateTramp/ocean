@@ -51,7 +51,7 @@ def instagram(urls):
 	begAccounts  = cur.fetchall()
 	cur.close()
 	
-	for url in urls[0]:
+	for url in urls[]:
 	
 		print url
 		
@@ -126,6 +126,6 @@ def instagram(urls):
 t0 = time.time()
 urls = collect_links()			
 # instagram(urls)
-instagram('https://www.instagram.com/samburskaya/')
+instagram(['https://www.instagram.com/samburskaya/'])
 t1 = time.time()
 print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
