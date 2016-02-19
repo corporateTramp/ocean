@@ -25,7 +25,7 @@ def collect_links():
 			
 def instagram(urls):
 	
-	conn = psycopg2.connect("dbname=postgres user=root password =postgres" )
+	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	# cur = conn.cursor()
 	
 	for url in urls[:2]:
