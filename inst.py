@@ -104,7 +104,7 @@ def instagram(urls):
 		# conn.commit()
 		# cur.close()
 		# conn.close()
-	
+		
 		driver.quit()
 		time.sleep(2)
 	
