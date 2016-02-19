@@ -24,29 +24,20 @@ def collect_links():
 	return pages
 	
 			
-# def convert_lists(data):
-	# for dic in range(0,len(data)):
-		# for key in data[dic]:
-			# x = data[dic][key]
-			# if isinstance(x, basestring):
-				# x = x.decode('utf-8')
-	# return data
-
-
 def instagram(urls):
 	
-	# conn = psycopg2.connect("dbname=mydb user=postgres")
+	# conn = psycopg2.connect("dbname=postgres user=root password =postgres" )
 	# cur = conn.cursor()
 	
 	# dcap = dict(DesiredCapabilities.PHANTOMJS)
 	# dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
 	
-	accounts =[]
-	scan_sessions = []
-	content_params =[]
+	# accounts =[]
+	# scan_sessions = []
 	
 	for url in urls[:3]:
-
+	
+		content_params =[]
 		print url
 		
 		# driver = webdriver.PhantomJS(desired_capabilities=dcap)
@@ -77,7 +68,12 @@ def instagram(urls):
 						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
-						
+					
+					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
+					# content_params.append(content_params_add)
+					
+					
+					
 					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
 					# content_params.append(content_params_add)
 
@@ -87,18 +83,22 @@ def instagram(urls):
 		accounts_add = (name, description, private)
 		scan_sessions_add = (name, publications, subscribers,subscribtions)
 		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		# check if name exists
+		# if exists - get ID
+		# else - insert and get ID
 		
 		# accounts_add = {"name": name, "description": description, "private": private}
 		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
-		accounts.append(accounts_add)
-		scan_sessions.append(scan_sessions_add)
+		
+		# accounts_add = {"name": name, "description": description, "private": private}
+		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		
+		# accounts_add = {"name": name, "description": description, "private": private}
+		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		
+		# accounts.append(accounts_add)
+		# scan_sessions.append(scan_sessions_add)
 		
 		# cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
 		# conn.commit()
