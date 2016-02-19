@@ -75,7 +75,7 @@ def instagram(urls):
 		cur = conn.cursor()
 		cur.execute("INSERT INTO accounts(name, description, private, created_at, updated_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), date_trunc('second',CURRENT_TIMESTAMP));", accounts_add)
 
-		cur.execute("INSERT INTO accounts(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+		cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 		
 		cur.executemany("INSERT INTO content_params(account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (1, 1, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 				
