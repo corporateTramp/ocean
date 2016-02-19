@@ -60,7 +60,7 @@ def instagram(urls):
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 					
 
-					content_params =[]					
+					content_params_add =[]					
 					content_params_add.append = (content_type, alt, likes, comments)
 
 		except NoSuchElementException:
