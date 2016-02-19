@@ -1,4 +1,3 @@
-
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
@@ -8,6 +7,7 @@ import html5lib
 from bs4 import BeautifulSoup
 import time
 import collections
+import psycopg2
 
 def collect_links():
 	pages  = []
@@ -34,6 +34,9 @@ def collect_links():
 
 
 def instagram(urls):
+	
+	conn = psycopg2.connect("dbname=mydb user=postgres")
+	cur = conn.cursor()
 	
 	# dcap = dict(DesiredCapabilities.PHANTOMJS)
 	# dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
@@ -81,7 +84,7 @@ def instagram(urls):
 		except NoSuchElementException:
 			private = True
 		
-		accounts_add = [name, description, private]
+		accounts_add = (name, description, private)
 		# scan_sessions_add = [name, publications, subscribers,subscribtions]
 		
 		# accounts_add = {"name": name, "description": description, "private": private}
@@ -96,6 +99,11 @@ def instagram(urls):
 		
 		accounts.append(accounts_add)
 		# scan_sessions.append(scan_sessions_add)
+		
+		cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
+		conn.commit()
+		cur.close()
+		conn.close()
 	
 		driver.quit()
 		time.sleep(5)
