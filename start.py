@@ -99,7 +99,7 @@ def instagram(urls):
 		# conn.close()
 		
 		driver.quit()
-		time.sleep(2)
+		time.sleep(7)
 	
 	conn.close()
 	
