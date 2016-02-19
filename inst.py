@@ -100,7 +100,7 @@ def instagram(urls):
 		accounts.append(accounts_add)
 		# scan_sessions.append(scan_sessions_add)
 		
-		cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
+		#cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
 		conn.commit()
 		cur.close()
 		conn.close()
