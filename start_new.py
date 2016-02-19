@@ -1,13 +1,14 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
-# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import requests
 import html5lib
 from bs4 import BeautifulSoup
 import time
 import collections
 import psycopg2
+
+t0 = time.time()
 
 def collect_links():
 	pages  = []
@@ -19,31 +20,43 @@ def collect_links():
 		page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 		pages.append(page)
 	
-	print "collection is finished"
+	print "Urls are collected"
 	
 	return pages
+
+def convert_tuple_to_unicode(data):
+	list =[]
+	for dic in range(0,len(data)):
+		x = data[dic]
+		if isinstance(x, basestring):
+			list.append(x.decode('utf-8'))
+		else:
+			list.append(x)
+	return tuple(list)
 	
-			
+def strInt(text):
+	if "," in text:
+		text = int(text.replace(',',''))
+	elif "k" in text:
+		text = int(float(text.replace('k',''))*1000)
+	elif "m" in text:
+		text = int(float(text.replace('m',''))*1000000)
+	else:
+		text = int(text)
+	return text
+
 def instagram(urls):
 	
-	conn = psycopg2.connect("dbname=postgres user=root password =postgres" )
-	cur = conn.cursor()
+	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	
-	# dcap = dict(DesiredCapabilities.PHANTOMJS)
-	# dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
+	for url in urls:
 	
-	# accounts =[]
-	# scan_sessions = []
-	
-	for url in urls[:3]:
-	
-		content_params =[]
 		print url
 		
-		# driver = webdriver.PhantomJS(desired_capabilities=dcap)
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
+		#parsing main info
 		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
 		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
 		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
@@ -51,10 +64,11 @@ def instagram(urls):
 		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
 		
 		
+		#parsing posts
+		content_params_add =[]
 		try:
 			for x in range (1,5):
 				for i in range(1,4):
-					private = False
 					pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
 					hover = ActionChains(driver).move_to_element(pic)
 					hover.perform()
@@ -69,51 +83,47 @@ def instagram(urls):
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 					
-					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
-					# content_params.append(content_params_add)
+					private = False
+									
+					content_params_new = [content_type, alt, strInt(likes), strInt(comments)]
+					content_params_add.append(content_params_new)
 					
-					
-					
-					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
-					# content_params.append(content_params_add)
-
 		except NoSuchElementException:
 			private = True
 		
-		accounts_add = (name, description, private)
-		scan_sessions_add = (name, publications, subscribers,subscribtions)
+		##updating accounts
+		account_add = (name, description, private)	
+		cur = conn.cursor()
+		cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
+		conn.commit()
+		cur.close()
+				
+		##mapping account id and updating scan_sessions	
+		account_id = url+1
+		scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
+		cur = conn.cursor()
+		cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+		conn.commit()
+		cur.close()
 		
-		# check if name exists
-		# if exists - get ID
-		# else - insert and get ID
 		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		# accounts.append(accounts_add)
-		# scan_sessions.append(scan_sessions_add)
-		
-		# cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
-		# conn.commit()
-		# cur.close()
-		# conn.close()
-		
+		##mapping scan_id
+		scan_session_id = url+1
+				
+		##adding content params
+		content_params_add = [tuple(l) for l in content_params_add]
+		cur = conn.cursor()
+		cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_id, scan_session_id, content_params_add)
+		conn.commit()
+		cur.close()
+
 		driver.quit()
-		time.sleep(2)
+		time.sleep(10)
 	
-	# accounts = convert_lists(accounts)
-	# scan_sessions = convert_lists(scan_sessions)
-	# content_params = convert_lists(content_params)
-	
-	return accounts, scan_sessions
+	conn.close()
 	
 
 urls = collect_links()			
-print instagram(urls)
+instagram(urls)
+t1 = time.time()
+print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))

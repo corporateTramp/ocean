@@ -8,6 +8,8 @@ import time
 import collections
 import psycopg2
 
+t0 = time.time()
+
 def collect_links():
 	pages  = []
 	r = requests.get('http://www.t30p.ru/Instagram.aspx')
@@ -68,7 +70,6 @@ def instagram(urls):
 		
 		#parsing posts
 		content_params_add =[]
-
 		try:
 			for x in range (1,5):
 				for i in range(1,4):
@@ -94,49 +95,62 @@ def instagram(urls):
 		except NoSuchElementException:
 			private = True
 		
-		#filtering of what to add
-		accounts_add = (name, description, private)	
-		print accounts_add
+		##filtering of what to add and updating accounts
+		account_add = (name, description, private)	
+		cur = conn.cursor()
 		for acc in range(0,len(begAccounts)):
-			# if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
-			if accounts_add == begAccounts[acc]:
-				print 1
-			else:
-				print 0
+			if account_add[0] == convert_tuple_to_unicode(begAccounts[acc])[0]:
+				cur.execute("UPDATE accounts SET (name, description, private, updated_at) = (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP)) WHERE name = %s;", account_add, name)
+				conn.commit()
+			elif account_add <> convert_tuple_to_unicode(begAccounts[acc]):
+				cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
+				conn.commit()
+		cur.close()
 				
+		##mapping account id and updating scan_sessions
+		cur = conn.cursor()
+		cur.execute("SELECT id, name FROM accounts;")
+		updatedAccounts  = cur.fetchall()
+		updatedAccounts = convert_tuple_to_unicode(updatedAccounts)
+		cur.close()
+		
+		account_id = 999999
+		for i in range(0,len(updatedAccounts)):
+			if name == updatedAccounts[i][1].decode('utf-8'):
+				account_id = updatedAccounts[i][0]
+		
+		scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
+		cur = conn.cursor()
+		cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+		conn.commit()
+		cur.close()
+		
+		
+		##mapping scan_id
+		cur = conn.cursor()
+		cur.execute("SELECT id, account_id FROM scan_sessions;")
+		updatedSessions  = cur.fetchall()
+		cur.close()
+		
+		scan_session_id = 999999
+		for q in range(0,len(updatedSessions)):
+			if account_id == updatedSessions[q][1]:
+				scan_session_id = updatedSessions[i][0]
 				
-		print '---------------------'
-		for acc in range(0,len(begAccounts)):
-			if accounts_add == convert_tuple_to_unicode(begAccounts[acc]):
-				print 1
-			else:
-				print 0
+		##adding content params
+		content_params_add = [tuple(l) for l in content_params_add]
+		cur = conn.cursor()
+		cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_id, scan_session_id, content_params_add)
+		conn.commit()
+		cur.close()
 
-		
-		
-		# scan_sessions_add = (strInt(publications), strInt(subscribers),strInt(subscribtions))
-		# content_params_add = [tuple(l) for l in content_params_add]
-		
-		## write to database
-		# cur = conn.cursor()
-		# cur.execute("INSERT INTO accounts(name, description, private, created_at, updated_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), date_trunc('second',CURRENT_TIMESTAMP));", accounts_add)
-
-		# cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
-		
-		# cur.executemany("INSERT INTO content_params (content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
-				
-		# conn.commit()
-		# cur.close()
-
-		# driver.quit()
-		# time.sleep(10)
+		driver.quit()
+		time.sleep(10)
 	
 	conn.close()
 	
-	
-t0 = time.time()
+
 urls = collect_links()			
-# instagram(urls)
-instagram(['https://www.instagram.com/samburskaya/'])
+instagram(urls)
 t1 = time.time()
 print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
