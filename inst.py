@@ -24,13 +24,13 @@ def collect():
 	return pages
 	
 			
-def convert_lists(data):
-	for dic in range(0,len(data)):
-		for key in data[dic]:
-			x = data[dic][key]
-			if isinstance(x, basestring):
-				x = x.decode('utf-8')
-	return data
+# def convert_lists(data):
+	# for dic in range(0,len(data)):
+		# for key in data[dic]:
+			# x = data[dic][key]
+			# if isinstance(x, basestring):
+				# x = x.decode('utf-8')
+	# return data
 
 
 def instagram(urls):
@@ -93,9 +93,9 @@ def instagram(urls):
 		driver.quit()
 		time.sleep(5)
 	
-	accounts = convert_lists(accounts)
-	scan_sessions = convert_lists(scan_sessions)
-	content_params = convert_lists(content_params)
+	# accounts = convert_lists(accounts)
+	# scan_sessions = convert_lists(scan_sessions)
+	# content_params = convert_lists(content_params)
 	
 	print accounts, scan_sessions, content_params
 			
