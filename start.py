@@ -84,7 +84,7 @@ def instagram(urls):
 		cur.close()
 
 		driver.quit()
-		time.sleep(5)
+		time.sleep(10)
 	
 	conn.close()
 	
