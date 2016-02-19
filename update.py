@@ -36,7 +36,7 @@ def strInt(text):
 	if "," in text:
 		text = int(text.replace(',',''))
 	elif "k" in text:
-		text = int(float(text.replace('m',''))*1000)
+		text = int(float(text.replace('k',''))*1000)
 	elif "m" in text:
 		text = int(float(text.replace('m',''))*1000000)
 	else:
