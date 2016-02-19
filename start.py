@@ -27,7 +27,7 @@ def instagram(urls):
 	
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	
-	for url in urls[3:5]:
+	for url in urls[1:10]:
 	
 		print url
 		
@@ -84,11 +84,13 @@ def instagram(urls):
 		cur.close()
 
 		driver.quit()
-		time.sleep(7)
+		time.sleep(5)
 	
 	conn.close()
 	
 	
-
+t0 = time.time()
 urls = collect_links()			
 instagram(urls)
+t1 = time.time()
+print "Код выполнялся %s" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
