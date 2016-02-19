@@ -75,24 +75,27 @@ def instagram(urls):
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 						
-						print alt
-						
-					content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
-					content_params.append(content_params_add)
+					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
+					# content_params.append(content_params_add)
 
 		except NoSuchElementException:
 			private = True
 		
-		print description
+		accounts_add = [name, description, private]
+		# scan_sessions_add = [name, publications, subscribers,subscribtions]
 		
-		accounts_add = {"name": name, "description": description, "private": private}
-		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		# accounts_add = {"name": name, "description": description, "private": private}
+		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
-		accounts_add = {"name": name, "description": description, "private": private}
-		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
-		accounts.append(accounts_add)
-		scan_sessions.append(scan_sessions_add)
+		# accounts_add = {"name": name, "description": description, "private": private}
+		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		
+		# accounts_add = {"name": name, "description": description, "private": private}
+		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		
+		# accounts.append(accounts_add)
+		# scan_sessions.append(scan_sessions_add)
 	
 		driver.quit()
 		time.sleep(5)
@@ -101,12 +104,11 @@ def instagram(urls):
 	# scan_sessions = convert_lists(scan_sessions)
 	# content_params = convert_lists(content_params)
 	
-	return accounts, scan_sessions, content_params
+	return accounts
 	
-def push
+	
 
 
 
 urls = collect_links()			
-data_for_push = instagram(urls)
-print data_for_push
+print instagram(urls)
