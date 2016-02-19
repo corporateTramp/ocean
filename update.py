@@ -99,7 +99,7 @@ def instagram(urls):
 		print len(begAccounts)
 		for acc in range(0,len(begAccounts)):
 			# if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
-			if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
+			if accounts_add in begAccounts[acc]:
 				print 1
 			else:
 				print 0
