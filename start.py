@@ -26,9 +26,8 @@ def collect_links():
 def instagram(urls):
 	
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
-	# cur = conn.cursor()
 	
-	for url in urls[:2]:
+	for url in urls[3:5]:
 	
 		print url
 		
@@ -80,40 +79,12 @@ def instagram(urls):
 				
 		conn.commit()
 		cur.close()
-				
-		
-		# check if name exists
-		# if exists - get ID
-		# else - insert and get ID
-		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
-		
-		# accounts.append(accounts_add)
-		# scan_sessions.append(scan_sessions_add)
-		
-		# cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
-		# conn.commit()
-		# cur.close()
-		# conn.close()
-		
+
 		driver.quit()
 		time.sleep(7)
 	
 	conn.close()
 	
-	# accounts = convert_lists(accounts)
-	# scan_sessions = convert_lists(scan_sessions)
-	# content_params = convert_lists(content_params)
-	
-	# return accounts, scan_sessions
 	
 
 urls = collect_links()			
