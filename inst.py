@@ -28,7 +28,7 @@ def convert_lists(data):
 	for dic in range(0,len(data)):
 		for key in data[dic]:
 			x = data[dic][key]
-			isinstance(s, basestring):
+			if isinstance(s, basestring):
 				x = x.decode('utf-8')
 	return data
 
