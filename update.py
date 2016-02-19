@@ -95,7 +95,10 @@ def instagram(urls):
 		
 		#filtering of what to add
 		accounts_add = (name, description, private)	
+		print accounts_add
+		print len(begAccounts)
 		for acc in range(0,len(begAccounts)):
+			# if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
 			if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
 				print 1
 			else:
