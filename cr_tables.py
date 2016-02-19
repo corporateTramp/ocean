@@ -10,5 +10,9 @@ cur.execute("CREATE TABLE scan_sessions ( id SERIAL PRIMARY KEY, account_id inte
 cur.execute("CREATE TABLE content_params ( id SERIAL PRIMARY KEY, account_id integer, scan_session_id integer,content_type character(10),description text, likes integer, comments integer, created_at timestamp);")
 
 conn.commit()
+
+cur.execute("select relname from pg_class where relkind='r' and relname !~ '^(pg_|sql_)';")
+print cursor.fetchall()
+
 cur.close()
 conn.close()
