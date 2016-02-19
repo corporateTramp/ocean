@@ -44,7 +44,7 @@ def strInt(text):
 	return text
 
 def instagram(urls):
-
+	
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	cur = conn.cursor()
 	cur.execute("SELECT name, description, private FROM accounts;")
@@ -72,7 +72,6 @@ def instagram(urls):
 		try:
 			for x in range (1,5):
 				for i in range(1,4):
-					private = False
 					pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
 					hover = ActionChains(driver).move_to_element(pic)
 					hover.perform()
@@ -86,6 +85,8 @@ def instagram(urls):
 						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+					
+					private = False
 									
 					content_params_new = [content_type, alt, strInt(likes), strInt(comments)]
 					content_params_add.append(content_params_new)
@@ -98,7 +99,7 @@ def instagram(urls):
 		print accounts_add
 		for acc in range(0,len(begAccounts)):
 			# if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
-			if accounts_add in begAccounts[acc]:
+			if accounts_add == begAccounts[acc]:
 				print 1
 			else:
 				print 0
@@ -106,7 +107,7 @@ def instagram(urls):
 				
 		print '---------------------'
 		for acc in range(0,len(begAccounts)):
-			if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
+			if accounts_add == convert_tuple_to_unicode(begAccounts[acc]):
 				print 1
 			else:
 				print 0
