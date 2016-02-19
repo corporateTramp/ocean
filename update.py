@@ -51,7 +51,7 @@ def instagram(urls):
 	begAccounts  = cur.fetchall()
 	cur.close()
 	
-	for url in urls[]:
+	for url in urls[0]:
 	
 		print url
 		
