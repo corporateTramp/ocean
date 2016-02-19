@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import time
 import collections
 
-def collect():
+def collect_links():
 	pages  = []
 	r = requests.get('http://www.t30p.ru/Instagram.aspx')
 	soup = BeautifulSoup(r.text, 'html5lib')
@@ -75,14 +75,14 @@ def instagram(urls):
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 						
-					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
-					# content_params.append(content_params_add)
+					content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
+					content_params.append(content_params_add)
 
 		except NoSuchElementException:
 			private = True
 		
-		# accounts_add = {"name": name, "description": description, "private": private}
-		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
+		accounts_add = {"name": name, "description": description, "private": private}
+		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
 		accounts_add = {"name": name, "description": description, "private": private}
 		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
@@ -97,9 +97,11 @@ def instagram(urls):
 	# scan_sessions = convert_lists(scan_sessions)
 	# content_params = convert_lists(content_params)
 	
-	print accounts, scan_sessions, content_params
-			
-				
+	return accounts, scan_sessions, content_params
+	
+	
+# def push 				
 
-urls = collect()			
-instagram(urls)
+urls = collect_links()			
+data_for_push = instagram(urls)
+print data_for_push
