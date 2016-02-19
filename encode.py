@@ -33,23 +33,31 @@ def strInt(text):
 		text = int(text)
 	return text
 	
+def convert_lists(data):
+	for dic in range(0,len(data)):
+		for key in data[dic]:
+			x = data[dic][key]
+			if isinstance(x, basestring):
+				x = x.decode('utf-8')
+	return data
+	
 
 def instagram(urls):
 	
-	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
+	# conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	
-	for url in urls[1:3]:
+	for url in urls["https://www.instagram.com/samburskaya/"]:
 	
 		print url
+
+
+import selenium.webdriver as webdriver
+from selenium.webdriver.common.action_chains import ActionChains		
+driver = webdriver.PhantomJS()
+driver.get('https://www.instagram.com/samburskaya/')
 		
-		driver = webdriver.PhantomJS()
-		driver.get(url)
-		
-		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
-		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
-		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
-		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
-		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
+name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
+description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
 		
 		content_params_add =[]
 		
@@ -78,26 +86,25 @@ def instagram(urls):
 			private = True
 		
 		accounts_add = (name, description, private)
-		scan_sessions_add = (strInt(publications), strInt(subscribers),strInt(subscribtions))
-		content_params_add = [tuple(l) for l in content_params_add]
+		# scan_sessions_add = (strInt(publications), strInt(subscribers),strInt(subscribtions))
+		# content_params_add = [tuple(l) for l in content_params_add]
 		
 		
 		
-		# write to database
-		cur = conn.cursor()
-		cur.execute("INSERT INTO accounts(name, description, private, created_at, updated_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), date_trunc('second',CURRENT_TIMESTAMP));", accounts_add)
+		# cur = conn.cursor()
+		# cur.execute("INSERT INTO accounts(name, description, private, created_at, updated_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), date_trunc('second',CURRENT_TIMESTAMP));", accounts_add)
 
-		cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+		# cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 		
-		cur.executemany("INSERT INTO content_params (content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
+		# cur.executemany("INSERT INTO content_params (content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 				
-		conn.commit()
-		cur.close()
+		# conn.commit()
+		# cur.close()
 
-		driver.quit()
-		time.sleep(10)
+		# driver.quit()
+		# time.sleep(10)
 	
-	conn.close()
+	# conn.close()
 	
 	
 t0 = time.time()

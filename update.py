@@ -22,6 +22,16 @@ def collect_links():
 	
 	return pages
 
+def convert_tuple_to_unicode(data):
+	list =[]
+	for dic in range(0,len(data)):
+		x = data[dic]
+		if isinstance(x, basestring):
+			list.append(x.decode('utf-8'))
+		else:
+			list.append(x)
+	return tuple(list)
+	
 def strInt(text):
 	if "," in text:
 		text = int(text.replace(',',''))
@@ -32,27 +42,33 @@ def strInt(text):
 	else:
 		text = int(text)
 	return text
-	
 
 def instagram(urls):
-	
+
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
+	cur = conn.cursor()
+	cur.execute("SELECT name, description, private FROM accounts;")
+	begAccounts  = cur.fetchall()
+	cur.close()
 	
-	for url in urls[1:3]:
+	for url in urls[]:
 	
 		print url
 		
 		driver = webdriver.PhantomJS()
 		driver.get(url)
 		
+		#parsing main info
 		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
 		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
 		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
 		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
 		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
 		
-		content_params_add =[]
 		
+		#parsing posts
+		content_params_add =[]
+
 		try:
 			for x in range (1,5):
 				for i in range(1,4):
@@ -77,31 +93,39 @@ def instagram(urls):
 		except NoSuchElementException:
 			private = True
 		
-		accounts_add = (name, description, private)
-		scan_sessions_add = (strInt(publications), strInt(subscribers),strInt(subscribtions))
-		content_params_add = [tuple(l) for l in content_params_add]
-		
-		
-		
-		# write to database
-		cur = conn.cursor()
-		cur.execute("INSERT INTO accounts(name, description, private, created_at, updated_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), date_trunc('second',CURRENT_TIMESTAMP));", accounts_add)
+		#filtering of what to add
+		accounts_add = (name, description, private)	
+		for acc in range(0,len(begAccounts)):
+			if accounts_add in convert_tuple_to_unicode(begAccounts[acc]):
+				print 1
+			else:
+				print 0
 
-		cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 		
-		cur.executemany("INSERT INTO content_params (content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
+		
+		# scan_sessions_add = (strInt(publications), strInt(subscribers),strInt(subscribtions))
+		# content_params_add = [tuple(l) for l in content_params_add]
+		
+		## write to database
+		# cur = conn.cursor()
+		# cur.execute("INSERT INTO accounts(name, description, private, created_at, updated_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), date_trunc('second',CURRENT_TIMESTAMP));", accounts_add)
+
+		# cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+		
+		# cur.executemany("INSERT INTO content_params (content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 				
-		conn.commit()
-		cur.close()
+		# conn.commit()
+		# cur.close()
 
-		driver.quit()
-		time.sleep(10)
+		# driver.quit()
+		# time.sleep(10)
 	
 	conn.close()
 	
 	
 t0 = time.time()
 urls = collect_links()			
-instagram(urls)
+# instagram(urls)
+instagram('https://www.instagram.com/samburskaya/')
 t1 = time.time()
 print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
