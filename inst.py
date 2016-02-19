@@ -25,7 +25,7 @@ def collect():
 	
 			
 def convert_lists(data):
-    for dic in range(0,len(data)):
+	for dic in range(0,len(data)):
 		for key in data[dic]:
 			x = data[dic][key]
 			if isinstance(x, unicode):
