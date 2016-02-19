@@ -23,11 +23,14 @@ def collect():
 	
 	return pages
 	
+			
 def convert_lists(data):
-    for iter in data:
-		for val in iter.values():
-			if isinstance(data, unicode):
-				val = val.encode('utf-8',"replace")
+    for dic in range(0,len(data)):
+		for key in data[dic]:
+			x = data[dic][key]
+			if isinstance(x, unicode):
+				x = x.encode('utf-8',"replace")
+	return data
 
 
 def instagram(urls):
@@ -72,11 +75,14 @@ def instagram(urls):
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
 						
-					content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
-					content_params.append(content_params_add)
+					# content_params_add = {"name": name, "content_type": content_type, "description": alt, "likes":likes,"comments":comments}
+					# content_params.append(content_params_add)
 
 		except NoSuchElementException:
 			private = True
+		
+		# accounts_add = {"name": name, "description": description, "private": private}
+		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
 		accounts_add = {"name": name, "description": description, "private": private}
 		scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
