@@ -35,8 +35,8 @@ def collect_links():
 
 def instagram(urls):
 	
-	conn = psycopg2.connect("dbname=mydb user=postgres")
-	cur = conn.cursor()
+	# conn = psycopg2.connect("dbname=mydb user=postgres")
+	# cur = conn.cursor()
 	
 	# dcap = dict(DesiredCapabilities.PHANTOMJS)
 	# dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 " "(KHTML, like Gecko) Chrome/15.0.87")
@@ -85,7 +85,7 @@ def instagram(urls):
 			private = True
 		
 		accounts_add = (name, description, private)
-		# scan_sessions_add = [name, publications, subscribers,subscribtions]
+		scan_sessions_add = (name, publications, subscribers,subscribtions)
 		
 		# accounts_add = {"name": name, "description": description, "private": private}
 		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
@@ -98,25 +98,22 @@ def instagram(urls):
 		# scan_sessions_add = {"name": name, "publications": publications, "subscribers": subscribers, "subscribtions": subscribtions}
 		
 		accounts.append(accounts_add)
-		# scan_sessions.append(scan_sessions_add)
+		scan_sessions.append(scan_sessions_add)
 		
-		cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
-		conn.commit()
-		cur.close()
-		conn.close()
+		# cur.executemany("INSERT INTO accounts (name,description,private) VALUES (%s, %s);,data")
+		# conn.commit()
+		# cur.close()
+		# conn.close()
 	
 		driver.quit()
-		time.sleep(5)
+		time.sleep(2)
 	
 	# accounts = convert_lists(accounts)
 	# scan_sessions = convert_lists(scan_sessions)
 	# content_params = convert_lists(content_params)
 	
-	return accounts
+	return accounts, scan_sessions
 	
-	
-
-
 
 urls = collect_links()			
 print instagram(urls)
