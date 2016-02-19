@@ -26,7 +26,7 @@ def strInt(text):
 	if "," in text:
 		text = int(text.replace(',',''))
 	elif "k" in text:
-		text = int(float(text.replace('m',''))*1000)
+		text = int(float(text.replace('k',''))*1000)
 	elif "m" in text:
 		text = int(float(text.replace('m',''))*1000000)
 	else:
@@ -38,7 +38,7 @@ def instagram(urls):
 	
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	
-	for url in urls[1:3]:
+	for url in urls[0:10]:
 	
 		print url
 		
