@@ -61,7 +61,7 @@ def instagram(urls):
 					
 
 					content_params_add =[]					
-					content_params_add.append = (content_type, alt, likes, comments)
+					content_params_add.append = [content_type, alt, likes, comments]
 
 		except NoSuchElementException:
 			private = True
