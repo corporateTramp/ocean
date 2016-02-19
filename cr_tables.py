@@ -12,7 +12,7 @@ cur.execute("CREATE TABLE content_params ( id SERIAL PRIMARY KEY, account_id int
 conn.commit()
 
 cur.execute("select relname from pg_class where relkind='r' and relname !~ '^(pg_|sql_)';")
-print cursor.fetchall()
+print cur.fetchall()
 
 cur.close()
 conn.close()
