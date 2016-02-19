@@ -40,6 +40,8 @@ def instagram(urls):
 		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
 		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
 		
+		content_params_add =[]
+		
 		try:
 			for x in range (1,5):
 				for i in range(1,4):
@@ -57,10 +59,10 @@ def instagram(urls):
 						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
 						content_type = "video"
 						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+									
+					content_params_new = (content_type, alt, likes, comments)
+					content_params_add = content_params_add.append(content_params_new)
 					
-
-					content_params_add =[]					
-					content_params_add.append = [content_type, alt, likes, comments]
 
 		except NoSuchElementException:
 			private = True
