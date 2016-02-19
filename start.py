@@ -78,7 +78,7 @@ def instagram(urls):
 
 		cur.execute("INSERT INTO scan_sessions(publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 		
-		cur.executemany("INSERT INTO content_params(account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (1, 1, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
+		cur.executemany("INSERT INTO content_params (content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 				
 		conn.commit()
 		cur.close()
@@ -93,4 +93,4 @@ t0 = time.time()
 urls = collect_links()			
 instagram(urls)
 t1 = time.time()
-print "Code execution time is: %s" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
+print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
