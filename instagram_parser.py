@@ -287,7 +287,7 @@ def see_table(table = 'accounts', field = '*', db_data="dbname=postgres user=pos
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
-	cur.execute("SELECT %s FROM %s;", (field, table,))
+	cur.execute("SELECT %s FROM %s;", field, table)
 	print cur.fetchall()
 	cur.close()
 	conn.close()
