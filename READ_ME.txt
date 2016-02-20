@@ -1,0 +1,1 @@
+python -c "from instagram_parser import *; update('http://www.t30p.ru/Instagram.aspx?p=2')"
