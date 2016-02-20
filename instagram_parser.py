@@ -6,7 +6,6 @@ import urllib2
 import html5lib
 from bs4 import BeautifulSoup
 import time
-import collections
 import psycopg2
 
 def collect_links(link):
@@ -283,7 +282,6 @@ def see_table(table = "accounts", db_data="dbname=postgres user=postgres passwor
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
-	cur = conn.cursor()
 	cur.execute("SELECT * FROM %s;", table)
 	print cur.fetchall()
 	cur.close()
