@@ -191,7 +191,7 @@ def update_init(urls, db_data="dbname=postgres user=postgres password =postgres"
 			cur = conn.cursor()
 			for acc in range(0,len(begAccounts)):
 				if account_add[0] == convert_tuple_to_unicode(begAccounts[acc])[0]:
-					cur.execute("UPDATE accounts SET (name, description, private, updated_at) = (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP)) WHERE name = %s;", account_add, name)
+					cur.execute("UPDATE accounts SET (name, description, private, updated_at) = (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP)) WHERE name = %s;", (account_add, name))
 					conn.commit()
 				elif account_add <> convert_tuple_to_unicode(begAccounts[acc]):
 					cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
