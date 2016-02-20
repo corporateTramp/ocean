@@ -188,7 +188,7 @@ def update_init(urls, db_data="dbname=postgres user=postgres password =postgres"
 			##filtering of what to add and updating accounts
 			account_add = (name, description, private)	
 			cur = conn.cursor()
-			flag = 1
+			flag = 0
 			
 			for acc in range(0,len(begAccounts)):
 				if name == (convert_tuple_to_unicode(begAccounts[acc]))[0]:
@@ -196,7 +196,7 @@ def update_init(urls, db_data="dbname=postgres user=postgres password =postgres"
 					conn.commit()
 					flag = 1
 					
-			if flag = 0:
+			if flag == 0:
 					cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
 					conn.commit()
 					
