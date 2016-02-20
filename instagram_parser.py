@@ -197,7 +197,7 @@ def update_init(urls, db_data="dbname=postgres user=postgres password =postgres"
 					flag = 1
 					
 			if flag = 0:
-					cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", (account_add,))
+					cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
 					conn.commit()
 					
 			cur.close()
@@ -287,7 +287,7 @@ def see_table(table = "accounts", db_data="dbname=postgres user=postgres passwor
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
-	cur.execute("SELECT * FROM %s;", table)
+	cur.execute("SELECT * FROM %s;", (table,))
 	print cur.fetchall()
 	cur.close()
 	conn.close()
