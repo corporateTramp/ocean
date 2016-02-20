@@ -31,7 +31,7 @@
 		просмотр таблицы в командной строке (кроме комментариев):
 			see_table([table = "accounts", db_data="dbname=postgres user=postgres password =postgres"])
 	
-	2. Парсинг инстаграмма с 
+	2. Парсинг инстаграмма
 		---------------------------------
 		добавление/обновление данных:
 			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=postgres user=postgres password =postgres"])
