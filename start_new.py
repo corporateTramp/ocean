@@ -130,10 +130,11 @@ def instagram(urls):
 		except urllib2.HTTPError, err:
 			if err.code == 403:
 				print "Instagram denied access to", url
+				time.sleep(20)
 			else:
 				print "Connection problem raised on", url
 		
-		conn.close()
+	conn.close()
 	
 
 urls = collect_links()			
