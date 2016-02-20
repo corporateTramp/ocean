@@ -112,7 +112,7 @@ def instagram(urls):
 		scan_session_id = count
 				
 		##adding content params
-		for w in content_params_add:
+		for w in range(0,len(content_params_add)):
 			content_params_add[w].insert(0,scan_session_id)
 			content_params_add[w].insert(0,account_id)
 		
