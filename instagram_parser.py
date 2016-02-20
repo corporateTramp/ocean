@@ -290,14 +290,14 @@ def see_table(table = "accounts", db_data="dbname=postgres user=postgres passwor
 	conn.close()
 
 	
-def start(link='http://www.t30p.ru/Instagram.aspx', db_data="dbname=postgres user=postgres password =postgres")
+def start(link='http://www.t30p.ru/Instagram.aspx', db_data="dbname=postgres user=postgres password =postgres"):
 	t0 = time.time()
 	urls = collect_links(link)			
 	start_init(urls, db_data)
 	t1 = time.time()
 	print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
 	
-def update(link='http://www.t30p.ru/Instagram.aspx', db_data="dbname=postgres user=postgres password =postgres")
+def update(link='http://www.t30p.ru/Instagram.aspx', db_data="dbname=postgres user=postgres password =postgres"):
 	t0 = time.time()
 	urls = collect_links(link)			
 	update_init(urls, db_data)
