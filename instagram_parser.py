@@ -188,13 +188,18 @@ def update_init(urls, db_data="dbname=postgres user=postgres password =postgres"
 			##filtering of what to add and updating accounts
 			account_add = (name, description, private)	
 			cur = conn.cursor()
+			flag = 1
+			
 			for acc in range(0,len(begAccounts)):
-				if account_add[0] == convert_tuple_to_unicode(begAccounts[acc])[0]:
-					cur.execute("UPDATE accounts SET (name, description, private, updated_at) = (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP)) WHERE name = %s;", (name, description, private, name))
+				if name == (convert_tuple_to_unicode(begAccounts[acc]))[0]:
+					cur.execute("UPDATE accounts SET (name, description, private, updated_at) = (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP)) WHERE name = %s ;", (name, description, private, name,))
 					conn.commit()
-				elif account_add <> convert_tuple_to_unicode(begAccounts[acc]):
-					cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
+					flag = 1
+					
+			if flag = 0:
+					cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", (account_add,))
 					conn.commit()
+					
 			cur.close()
 					
 			##mapping account id and updating scan_sessions
