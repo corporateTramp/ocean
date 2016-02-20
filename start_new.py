@@ -50,7 +50,7 @@ def instagram(urls):
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	count = 1
 	
-	for url in urls:
+	for url in urls([1:10]):
 	
 		print url
 		
@@ -112,9 +112,13 @@ def instagram(urls):
 		scan_session_id = count
 				
 		##adding content params
+		for w in content_params_add:
+			content_params_add[w].insert(0,scan_session_id)
+			content_params_add[w].insert(0,account_id)
+		
 		content_params_add = [tuple(l) for l in content_params_add]
 		cur = conn.cursor()
-		cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_id, scan_session_id, content_params_add)
+		cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 		conn.commit()
 		cur.close()
 
