@@ -283,11 +283,17 @@ def refresh_tables(db_data="dbname=postgres user=postgres password =postgres"):
 	delete_tables (db_data)
 	create_tables(db_data)
 	
-def see_table(table = "accounts", field = "*", db_data="dbname=postgres user=postgres password =postgres"):
+def see_table_accounts(table = "accounts", db_data="dbname=postgres user=postgres password =postgres"):
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
-	cur.execute("SELECT %s FROM %s;", (field, table))
+	if table == 'accounts':
+		cur.execute("SELECT id, name FROM accounts;")
+	elif table == "scan_sessions":
+		cur.execute("SELECT id, account_id, publications, subscribers FROM scan_sessions;")
+	elif table == "content_params":
+		cur.execute("SELECT id, account_id, scan_session_id, content_type, likes, comments FROM content_params;")
+	
 	print cur.fetchall()
 	cur.close()
 	conn.close()
