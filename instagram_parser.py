@@ -226,7 +226,7 @@ def update_init(urls, db_data="dbname=postgres user=postgres password =postgres"
 			scan_session_id = 999999
 			for q in range(0,len(updatedSessions)):
 				if account_id == updatedSessions[q][1]:
-					scan_session_id = updatedSessions[i][0]
+					scan_session_id = updatedSessions[q][0]
 					
 			##adding content params
 			for w in range(0,len(content_params_add)):
