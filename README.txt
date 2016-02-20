@@ -34,8 +34,10 @@
 	
 	2. Парсинг инстаграмма
 		---------------------------------
-		добавление/обновление данных:
+		добавление/обновление данных* :
 			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password =postgres"])
 
-Дополнительно:
+* скрипт настроен на получение информации из базы (при обновлении) в кодировке "UTF-8", загрузка происходит в UNICODE
+
+Дополнительно
 	pgrep phantomjs | xargs kill
