@@ -12,14 +12,14 @@
 		--------------------------------
 		sudo apt-get install python-pip
 		
-	3. Дополнительные батарейки
-	   pip install ...
+	3. Дополнительные модули
 	   ---------------------------------
 	   pip install selenium requests html5lib bs4 psycopg2
 
 Работа с функциями Python 2.7 через командную строку на linux-x86_64 Ubuntu
 		----------------------------------------------------------
 		python -c "from instagram_parser import *; функция(аргументы)"
+		например, python -c "from instagram_parser import *; start()"
 	   
 Функции:
 	1. Работа с БД
@@ -28,16 +28,13 @@
 			create_tables ([db_data="dbname=postgres user=postgres password =postgres"])
 		удалить таблицы парсера: 
 			delete_tables([db_data="dbname=postgres user=postgres password =postgres"])
-		просмотр страницы в командной строке:
+		просмотр таблицы в командной строке (кроме комментариев):
 			see_table([table = "accounts", db_data="dbname=postgres user=postgres password =postgres"])
 	
 	2. Парсинг инстаграмма с 
 		---------------------------------
-		первый запуск:
-			start([link='http://www.t30p.ru/Instagram.aspx', db_data="dbname=postgres user=postgres password =postgres"])
 		добавление/обновление данных:
-			update([link='http://www.t30p.ru/Instagram.aspx', db_data="dbname=postgres user=postgres password =postgres"])
-
+			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=postgres user=postgres password =postgres"])
 
 Дополнительно:
 	pgrep phantomjs | xargs kill
