@@ -2,6 +2,7 @@ import selenium.webdriver as webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 import requests
+import urllib2 
 import html5lib
 from bs4 import BeautifulSoup
 import time
@@ -50,83 +51,89 @@ def instagram(urls):
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	count = 1
 	
-	for url in urls[2:10]:
-	
+	for url in urls:
+		
 		print url
-		
-		driver = webdriver.PhantomJS()
-		driver.get(url)
-		
-		#parsing main info
-		name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
-		description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
-		publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
-		subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
-		subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
-		
-		
-		#parsing posts
-		content_params_add =[]
 		try:
-			for x in range (1,5):
-				for i in range(1,4):
-					pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
-					hover = ActionChains(driver).move_to_element(pic)
-					hover.perform()
-					try:
-						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text
-						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text
-						content_type = "photo"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
-					except:
-						likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text
-						comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
-						content_type = "video"
-						alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+			driver = webdriver.PhantomJS()
+			driver.get(url)
+			
+			#parsing main info
+			name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
+			description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
+			publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
+			subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
+			subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
+			
+			
+			#parsing posts
+			content_params_add =[]
+			try:
+				for x in range (1,5):
+					for i in range(1,4):
+						pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
+						hover = ActionChains(driver).move_to_element(pic)
+						hover.perform()
+						try:
+							likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text
+							comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text
+							content_type = "photo"
+							alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+						except:
+							likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text
+							comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
+							content_type = "video"
+							alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+						
+						private = False
+										
+						content_params_new = [content_type, alt, strInt(likes), strInt(comments)]
+						content_params_add.append(content_params_new)
+						
+			except NoSuchElementException:
+				private = True
+			
+			##updating accounts
+			account_add = (name, description, private)	
+			cur = conn.cursor()
+			cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
+			conn.commit()
+			cur.close()
 					
-					private = False
-									
-					content_params_new = [content_type, alt, strInt(likes), strInt(comments)]
-					content_params_add.append(content_params_new)
+			##mapping account id and updating scan_sessions	
+			account_id = count
+			scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
+			cur = conn.cursor()
+			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+			conn.commit()
+			cur.close()
+			
+			
+			##mapping scan_id
+			scan_session_id = count
 					
-		except NoSuchElementException:
-			private = True
-		
-		##updating accounts
-		account_add = (name, description, private)	
-		cur = conn.cursor()
-		cur.execute("INSERT INTO accounts(name, description, private, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", account_add)
-		conn.commit()
-		cur.close()
-				
-		##mapping account id and updating scan_sessions	
-		account_id = count
-		scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
-		cur = conn.cursor()
-		cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
-		conn.commit()
-		cur.close()
-		
-		
-		##mapping scan_id
-		scan_session_id = count
-				
-		##adding content params
-		for w in range(0,len(content_params_add)):
-			content_params_add[w].insert(0,scan_session_id)
-			content_params_add[w].insert(0,account_id)
-		
-		content_params_add = [tuple(l) for l in content_params_add]
-		cur = conn.cursor()
-		cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
-		conn.commit()
-		cur.close()
+			##adding content params
+			for w in range(0,len(content_params_add)):
+				content_params_add[w].insert(0,scan_session_id)
+				content_params_add[w].insert(0,account_id)
+			
+			content_params_add = [tuple(l) for l in content_params_add]
+			cur = conn.cursor()
+			cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
+			conn.commit()
+			cur.close()
 
-		driver.quit()
-		count += 1
-		time.sleep(10)
-	
-	conn.close()
+			driver.quit()
+			count += 1
+			time.sleep(10)
+		
+		except urllib2.HTTPError, err:
+			if err.code == 403:
+				print "Instagram denied access to", url
+			else:
+				print "Connection problem raised on", url
+		
+		conn.close()
 	
 
 urls = collect_links()			
