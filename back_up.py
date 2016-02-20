@@ -198,11 +198,11 @@ def see_table(table = "accounts", db_data="dbname=postgres user=postgres passwor
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
 	if table == 'accounts':
-		cur.execute("SELECT id, name FROM accounts;")
+		cur.execute("SELECT id, name, created_at, updated_at FROM accounts;")
 	elif table == "scan_sessions":
-		cur.execute("SELECT id, account_id, publications, subscribers FROM scan_sessions;")
+		cur.execute("SELECT id, account_id, publications, subscribers, created_at FROM scan_sessions;")
 	elif table == "content_params":
-		cur.execute("SELECT id, account_id, scan_session_id, content_type, likes, comments FROM content_params;")
+		cur.execute("SELECT id, account_id, scan_session_id, content_type, likes, comments, created_at FROM content_params;")
 	
 	print cur.fetchall()
 	cur.close()
