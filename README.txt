@@ -25,16 +25,16 @@
 	1. Работа с БД
 		--------------------------------
 		создать таблицы по заданной структуре:
-			create_tables ([db_data="dbname=postgres user=postgres password =postgres"])
+			create_tables ([db_data="dbname=Localhosts user=postgres password =postgres"])
 		удалить таблицы парсера: 
-			delete_tables([db_data="dbname=postgres user=postgres password =postgres"])
+			delete_tables([db_data="dbname=Localhosts user=postgres password =postgres"])
 		просмотр таблицы в командной строке (кроме комментариев):
-			see_table([table = "accounts", db_data="dbname=postgres user=postgres password =postgres"])
+			see_table([table = "accounts", db_data="dbname=Localhosts user=postgres password =postgres"])
 	
 	2. Парсинг инстаграмма
 		---------------------------------
 		добавление/обновление данных:
-			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=postgres user=postgres password =postgres"])
+			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password =postgres"])
 
 Дополнительно:
 	pgrep phantomjs | xargs kill
