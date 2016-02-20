@@ -19,7 +19,8 @@
 Работа с функциями Python 2.7 через командную строку на linux-x86_64 Ubuntu
 		----------------------------------------------------------
 		python -c "from instagram_parser import *; функция(аргументы)"
-		например, python -c "from instagram_parser import *; start()"
+		например,
+		python -c "from instagram_parser import *; start()"
 	   
 Функции:
 	1. Работа с БД
