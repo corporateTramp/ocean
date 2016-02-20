@@ -29,7 +29,7 @@
 			create_tables ([db_data="dbname=Localhosts user=postgres password =postgres"])
 		удалить таблицы парсера: 
 			delete_tables([db_data="dbname=Localhosts user=postgres password =postgres"])
-		просмотр таблицы в командной строке (кроме комментариев):
+		просмотр таблицы в командной строке (основные данные):
 			see_table([table = "accounts", db_data="dbname=Localhosts user=postgres password =postgres"])
 	
 	2. Парсинг инстаграмма
