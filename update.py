@@ -122,7 +122,7 @@ def instagram(urls):
 			
 			scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
 			cur = conn.cursor()
-			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 			conn.commit()
 			cur.close()
 			
@@ -145,7 +145,7 @@ def instagram(urls):
 			
 			content_params_add = [tuple(l) for l in content_params_add]
 			cur = conn.cursor()
-			cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
+			cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 			conn.commit()
 			cur.close()
 
