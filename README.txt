@@ -1,6 +1,6 @@
-К установке:
+п»їРљ СѓСЃС‚Р°РЅРѕРІРєРµ:
 	1. PhantomJS
-		Установка на linux-x86_64 Ubuntu
+		РЈСЃС‚Р°РЅРѕРІРєР° РЅР° linux-x86_64 Ubuntu
 		--------------------------------
 		wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/phantomjs/phantomjs-1.9.2-linux-x86_64.tar.bz2
 		tar xf phantomjs-1.9.2-linux-x86_64.tar.bz2
@@ -8,33 +8,33 @@
 		mv phantomjs-1.9.2-linux-x86_64/ phantomjs
 	
 	2. Pip
-		Установка на linux-x86_64 Ubuntu
+		РЈСЃС‚Р°РЅРѕРІРєР° РЅР° linux-x86_64 Ubuntu
 		--------------------------------
 		sudo apt-get install python-pip
 		
-	3. Дополнительные модули
+	3. Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РјРѕРґСѓР»Рё
 	   ---------------------------------
 	   pip install selenium requests html5lib bs4 psycopg2
 
-Работа с функциями Python 2.7 через командную строку на linux-x86_64 Ubuntu
+Р Р°Р±РѕС‚Р° СЃ С„СѓРЅРєС†РёСЏРјРё Python 2.7 С‡РµСЂРµР· РєРѕРјР°РЅРґРЅСѓСЋ СЃС‚СЂРѕРєСѓ РЅР° linux-x86_64 Ubuntu
 		----------------------------------------------------------
-		python -c "from instagram_parser import *; функция(аргументы)"
-		например, python -c "from instagram_parser import *; start()"
+		python -c "from instagram_parser import *; С„СѓРЅРєС†РёСЏ(Р°СЂРіСѓРјРµРЅС‚С‹)"
+		РЅР°РїСЂРёРјРµСЂ, python -c "from instagram_parser import *; start()"
 	   
-Функции:
-	1. Работа с БД
+Р¤СѓРЅРєС†РёРё:
+	1. Р Р°Р±РѕС‚Р° СЃ Р‘Р”
 		--------------------------------
-		создать таблицы по заданной структуре:
+		СЃРѕР·РґР°С‚СЊ С‚Р°Р±Р»РёС†С‹ РїРѕ Р·Р°РґР°РЅРЅРѕР№ СЃС‚СЂСѓРєС‚СѓСЂРµ:
 			create_tables ([db_data="dbname=Localhosts user=postgres password =postgres"])
-		удалить таблицы парсера: 
+		СѓРґР°Р»РёС‚СЊ С‚Р°Р±Р»РёС†С‹ РїР°СЂСЃРµСЂР°: 
 			delete_tables([db_data="dbname=Localhosts user=postgres password =postgres"])
-		просмотр таблицы в командной строке (кроме комментариев):
+		РїСЂРѕСЃРјРѕС‚СЂ С‚Р°Р±Р»РёС†С‹ РІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРµ (РєСЂРѕРјРµ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ):
 			see_table([table = "accounts", db_data="dbname=Localhosts user=postgres password =postgres"])
 	
-	2. Парсинг инстаграмма
+	2. РџР°СЂСЃРёРЅРі РёРЅСЃС‚Р°РіСЂР°РјРјР°
 		---------------------------------
-		добавление/обновление данных:
+		РґРѕР±Р°РІР»РµРЅРёРµ/РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С…:
 			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password =postgres"])
 
-Дополнительно:
+Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕ:
 	pgrep phantomjs | xargs kill
