@@ -50,7 +50,7 @@ def instagram(urls):
 	conn = psycopg2.connect("dbname=postgres user=postgres password =postgres" )
 	count = 1
 	
-	for url in urls[1:10]:
+	for url in urls[2:10]:
 	
 		print url
 		
