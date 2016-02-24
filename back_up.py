@@ -67,17 +67,17 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			try:
 				fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"]
 			except:
-				fullName = ""
+				fullName = " "
 			
 			try:
 				bio = data["entry_data"]["ProfilePage"][0]["user"]["biography"]
 			except:
-				bio = ""
+				bio = " "
 				
 			try:
 				external_url = data["entry_data"]["ProfilePage"][0]["user"]["external_url"]
 			except:
-				external_url = ""
+				external_url = " "
 
 			description = fullName+" "+bio+" "+external_url
 			
