@@ -29,17 +29,6 @@ def convert_tuple_to_unicode(data):
 		else:
 			list.append(x)
 	return tuple(list)
-	
-def strInt(text):
-	if "," in text:
-		text = int(text.replace(',',''))
-	elif "k" in text:
-		text = int(float(text.replace('k',''))*1000)
-	elif "m" in text:
-		text = int(float(text.replace('m',''))*1000000)
-	else:
-		text = int(text)
-	return text
 
 def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 	
@@ -75,9 +64,9 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			name = data["entry_data"]["ProfilePage"][0]["user"]["username"]
 			subscribers = data["entry_data"]["ProfilePage"][0]["user"]["followed_by"]["count"]
 			subscribtions = data["entry_data"]["ProfilePage"][0]["user"]["follows"]["count"]
-			fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"]
-			bio = data["entry_data"]["ProfilePage"][0]["user"]["biography"]
-			external_url = data["entry_data"]["ProfilePage"][0]["user"]["external_url"]
+			try:fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"] ; except: fullName = ""
+			try:bio = data["entry_data"]["ProfilePage"][0]["user"]["biography"] ; except: bio = ""
+			try:external_url = data["entry_data"]["ProfilePage"][0]["user"]["external_url"] ; except: external_url = ""
 			description = fullName+" "+bio+" "+external_url
 			
 			
@@ -92,7 +81,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 						content_type = "Video"
 					likes = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["likes"]["count"]
 					comments = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["comments"]["count"]
-					alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"]				
+					try:alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"]; except: alt = ""	
 					
 					content_params_new = [content_type, alt, likes, comments]
 					content_params_add.append(content_params_new)
