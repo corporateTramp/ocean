@@ -67,7 +67,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			json_data = json_data[0].text
 			data = json_data[21:(len(json_data)-1)]
 			
-			print data
+			data = json.loads(json_data)
 			
 			#parsing main info
 			private = data["entry_data"]["ProfilePage"][0]["user"]["is_private"]
