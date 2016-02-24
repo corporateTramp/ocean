@@ -79,7 +79,11 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			except:
 				external_url = " "
 
-			description = fullName+" "+bio+" "+external_url
+			if not fullName: fullName = ""
+			if not bio: bio = ""
+			if not external_url: external_url = ""
+
+			description = fullName + " " + bio + " " + external_url
 			
 			
 			#parsing posts
