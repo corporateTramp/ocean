@@ -14,7 +14,8 @@
 		
 	3. Дополнительные модули
 	   ---------------------------------
-	   pip install selenium requests html5lib beautifulsoup4 psycopg2
+	   pip install requests html5lib beautifulsoup4
+	   sudo apt-get install python-psycopg2
 
 Работа с функциями Python 2.7 через командную строку на linux-x86_64 Ubuntu
 		----------------------------------------------------------
