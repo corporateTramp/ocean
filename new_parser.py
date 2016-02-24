@@ -156,7 +156,6 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			conn.commit()
 			cur.close()
 
-			driver.quit()
 			time.sleep(wait)
 		
 		except urllib2.HTTPError, err:
