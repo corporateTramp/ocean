@@ -1,12 +1,10 @@
-import selenium.webdriver as webdriver
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException
 import requests
 import urllib2 
 import html5lib
 from bs4 import BeautifulSoup
 import time
 import psycopg2
+import json
 
 def collect_links(link):
 	pages  = []
@@ -32,18 +30,7 @@ def convert_tuple_to_unicode(data):
 			list.append(x)
 	return tuple(list)
 	
-def strInt(text):
-	if "," in text:
-		text = int(text.replace(',',''))
-	elif "k" in text:
-		text = int(float(text.replace('k',''))*1000)
-	elif "m" in text:
-		text = int(float(text.replace('m',''))*1000000)
-	else:
-		text = int(text)
-	return text
-
-def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password =postgres"):
+def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=postgres"):
 	
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
@@ -51,48 +38,54 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password =po
 	begAccounts  = cur.fetchall()
 	cur.close()
 	
+	# set http headers
+	header = ['Cache-Control', 'Accept', 'User-Agent', 'Referrer', 'Accept-Encoding', 'Accept-Language']
+	value = ['no-cache','text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/ 39.0.2171.95 Safari/537.36', 'https://www.google.com/', 'gzip, deflate, sdch', 'ru-RU,en-US,en;q=0.8']
+	custom_headers={}
+	for i in range(1,len(header)):
+		custom_headers[header[i]] = value[i]
+	
 	for url in urls:
 		
-		print url
+		print "Started: " + url
 		try:
 			
-			driver = webdriver.PhantomJS()
-			driver.get(url)
+			r = requests.get(url, headers=custom_headers)
+			soup = BeautifulSoup(r.text, 'html5lib')
+			json_data = soup.body.find_all(type="text/javascript")
+			json_data = json_data[0].text
+			json_data = json_data[21:(len(json_data)-1)]
+			
+			data = json.loads(json_data)
 			
 			#parsing main info
-			name = driver.find_element_by_xpath("//section/main/article/header/div[2]/div[1]/h1").text
-			description = driver.find_element_by_xpath ("//section/main/article/header/div[2]/div[2]/span[2]").text
-			publications = driver.find_element_by_xpath ("//section/main/article/ul/li[1]/span/span[2]").text
-			subscribers = driver.find_element_by_xpath ("//section/main/article/ul/li[2]/span/span[2]").text
-			subscribtions = driver.find_element_by_xpath ("//section/main/article/ul/li[3]/span/span[2]").text
+			private = data["entry_data"]["ProfilePage"][0]["user"]["is_private"]
+			publications = data["entry_data"]["ProfilePage"][0]["user"]["media"]["count"]
+			name = data["entry_data"]["ProfilePage"][0]["user"]["username"]
+			subscribers = data["entry_data"]["ProfilePage"][0]["user"]["followed_by"]["count"]
+			subscribtions = data["entry_data"]["ProfilePage"][0]["user"]["follows"]["count"]
+			fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"]
+			bio = data["entry_data"]["ProfilePage"][0]["user"]["biography"]
+			external_url = data["entry_data"]["ProfilePage"][0]["user"]["external_url"]
+			description = fullName+" "+bio+" "+external_url
 			
 			
 			#parsing posts
 			content_params_add =[]
-			try:
-				for x in range (1,5):
-					for i in range(1,4):
-						pic = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div"%(x,i))
-						hover = ActionChains(driver).move_to_element(pic)
-						hover.perform()
-						try:
-							likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li/span[2]" %(x,i)).text
-							comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[2]/ul/li[2]/span[2]" %(x,i)).text
-							content_type = "photo"
-							alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
-						except:
-							likes = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li/span[2]" %(x,i)).text
-							comments = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[3]/ul/li[2]/span[2]" %(x,i)).text
-							content_type = "video"
-							alt = driver.find_element_by_xpath("//section/main/article/div[1]/div/div[%d]/a[%d]/div[1]/div[1]/img" %(x,i)).get_attribute("alt")
+			if private == False:
+				for i in range (0,9):
+					isVideo = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["is_video"]
+					if isVideo == False:
+						content_type = "Photo"
+					else:
+						content_type = "Video"
+					likes = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["likes"]["count"]
+					comments = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["comments"]["count"]
+					alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"]				
+					
+					content_params_new = [content_type, alt, likes, comments]
+					content_params_add.append(content_params_new)
 						
-						private = False
-										
-						content_params_new = [content_type, alt, strInt(likes), strInt(comments)]
-						content_params_add.append(content_params_new)
-						
-			except NoSuchElementException:
-				private = True
 			
 			##filtering of what to add and updating accounts
 			account_add = (name, description, private)	
@@ -123,7 +116,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password =po
 				if name == updatedAccounts[i][1].decode('utf-8'):
 					account_id = updatedAccounts[i][0]
 			
-			scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
+			scan_sessions_add = (account_id, publications, subscribers,subscribtions)
 			cur = conn.cursor()
 			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 			conn.commit()
@@ -152,7 +145,6 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password =po
 			conn.commit()
 			cur.close()
 
-			driver.quit()
 			time.sleep(wait)
 		
 		except urllib2.HTTPError, err:
@@ -165,7 +157,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password =po
 		
 	conn.close()
 
-def create_tables(db_data="dbname=Localhosts user=postgres password =postgres"):	
+def create_tables(db_data="dbname=Localhosts user=postgres password=postgres"):	
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 
@@ -178,7 +170,7 @@ def create_tables(db_data="dbname=Localhosts user=postgres password =postgres"):
 	print "Created"
 	conn.close()
 
-def delete_tables(db_data="dbname=Localhosts user=postgres password =postgres"):		
+def delete_tables(db_data="dbname=Localhosts user=postgres password=postgres"):		
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	cur.execute ("DROP TABLE IF EXISTS accounts, scan_sessions, content_params")
@@ -189,26 +181,26 @@ def delete_tables(db_data="dbname=Localhosts user=postgres password =postgres"):
 	print "Deleted"
 	conn.close()
 	
-def refresh_tables(db_data="dbname=Localhosts user=postgres password =postgres"):
+def refresh_tables(db_data="dbname=Localhosts user=postgres password=postgres"):
 	delete_tables (db_data)
 	create_tables(db_data)
 	
-def see_table(table = "accounts", db_data="dbname=Localhosts user=postgres password =postgres"):
+def see_table(table = "accounts", db_data="dbname=Localhosts user=postgres password=postgres"):
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
 	if table == 'accounts':
-		cur.execute("SELECT id, name FROM accounts;")
+		cur.execute("SELECT id, name, created_at, updated_at FROM accounts;")
 	elif table == "scan_sessions":
-		cur.execute("SELECT id, account_id, publications, subscribers FROM scan_sessions;")
+		cur.execute("SELECT id, account_id, publications, subscribers, created_at FROM scan_sessions;")
 	elif table == "content_params":
-		cur.execute("SELECT id, account_id, scan_session_id, content_type, likes, comments FROM content_params;")
+		cur.execute("SELECT id, account_id, scan_session_id, content_type, likes, comments, created_at FROM content_params;")
 	
 	print cur.fetchall()
 	cur.close()
 	conn.close()
 	
-def start(link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password =postgres"):
+def start(link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password=postgres"):
 	t0 = time.time()
 	urls = collect_links(link)			
 	start_init(urls, wait, db_data)
