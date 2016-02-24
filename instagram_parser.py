@@ -29,7 +29,7 @@ def convert_tuple_to_unicode(data):
 		else:
 			list.append(x)
 	return tuple(list)
-	
+
 def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=postgres"):
 	
 	conn = psycopg2.connect(db_data)
@@ -107,7 +107,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 						content_params_add.append(content_params_new)
 						content_params_new = [content_type, alt, likes, comments]
 						content_params_add.append(content_params_new)
-					except: 
+					except:
 						pass
 			
 			##filtering of what to add and updating accounts
