@@ -110,7 +110,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 					except:
 			
 			##filtering of what to add and updating accounts
-			account_add = (name, description, private)	
+			account_add = (name, description, private)
 			cur = conn.cursor()
 			flag = 0
 			

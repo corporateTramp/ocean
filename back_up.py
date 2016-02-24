@@ -108,8 +108,9 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 						content_params_new = [content_type, alt, likes, comments]
 						content_params_add.append(content_params_new)
 					except:
-			#filtering of what to add and updating accounts
-			account_add = (name, description, private)	
+			
+			##filtering of what to add and updating accounts
+			account_add = (name, description, private)
 			cur = conn.cursor()
 			flag = 0
 			
