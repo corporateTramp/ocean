@@ -65,7 +65,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			soup = BeautifulSoup(r.text, 'html5lib')
 			json_data = soup.body.find_all(type="text/javascript")
 			json_data = json_data[0].text
-			json_data = json_data[21:(len(json_data)-1)]
+			data = json_data[21:(len(json_data)-1)]
 			
 			#parsing main info
 			private = data["entry_data"]["ProfilePage"][0]["user"]["is_private"]

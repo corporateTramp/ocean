@@ -14,7 +14,7 @@
 		
 	3. Дополнительные модули
 	   ---------------------------------
-	   pip install requests html5lib beautifulsoup4
+	   pip install requests html5lib bs4
 	   sudo apt-get install python-psycopg2
 
 Работа с функциями Python 2.7 через командную строку на linux-x86_64 Ubuntu
@@ -22,6 +22,7 @@
 		python -c "from instagram_parser import *; функция(аргументы)"
 		например,
 		python -c "from instagram_parser import *; start()"
+		python -c "from new_parser import *; start()"
 	   
 Функции:
 	1. Работа с БД
