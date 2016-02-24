@@ -127,7 +127,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 				if name == updatedAccounts[i][1].decode('utf-8'):
 					account_id = updatedAccounts[i][0]
 			
-			scan_sessions_add = (account_id, strInt(publications), strInt(subscribers),strInt(subscribtions))
+			scan_sessions_add = (account_id, publications, subscribers,subscribtions)
 			cur = conn.cursor()
 			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
 			conn.commit()
