@@ -90,21 +90,24 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 			content_params_add =[]
 			if private == False:
 				for i in range (0,9):
-					isVideo = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["is_video"]
-					if isVideo == False:
-						content_type = "Photo"
-					else:
-						content_type = "Video"
-					likes = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["likes"]["count"]
-					comments = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["comments"]["count"]
 					try:
-						alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"]
-					except:
-						alt = ""	
-					
-					content_params_new = [content_type, alt, likes, comments]
-					content_params_add.append(content_params_new)
+						isVideo = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["is_video"]
+						if isVideo == False:
+							content_type = "Photo"
+						else:
+							content_type = "Video"
+						likes = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["likes"]["count"]
+						comments = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["comments"]["count"]
+						try:
+							alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"]
+						except:
+							alt = ""	
 						
+						content_params_new = [content_type, alt, likes, comments]
+						content_params_add.append(content_params_new)
+						
+						content_params_new = [content_type, alt, likes, comments]
+						content_params_add.append(content_params_new)
 			
 			##filtering of what to add and updating accounts
 			account_add = (name, description, private)	
