@@ -64,9 +64,9 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			name = data["entry_data"]["ProfilePage"][0]["user"]["username"]
 			subscribers = data["entry_data"]["ProfilePage"][0]["user"]["followed_by"]["count"]
 			subscribtions = data["entry_data"]["ProfilePage"][0]["user"]["follows"]["count"]
-			try:fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"] ; except: fullName = ""
-			try:bio = data["entry_data"]["ProfilePage"][0]["user"]["biography"] ; except: bio = ""
-			try:external_url = data["entry_data"]["ProfilePage"][0]["user"]["external_url"] ; except: external_url = ""
+			fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"] if is not None else fullName = ""
+			bio = data["entry_data"]["ProfilePage"][0]["user"]["biography"] if is not None else bio = ""
+			external_url = data["entry_data"]["ProfilePage"][0]["user"]["external_url"] if is not None else external_url = ""
 			description = fullName+" "+bio+" "+external_url
 			
 			
@@ -81,7 +81,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 						content_type = "Video"
 					likes = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["likes"]["count"]
 					comments = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["comments"]["count"]
-					try:alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"]; except: alt = ""	
+					alt = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["caption"] if is not None else alt = ""	
 					
 					content_params_new = [content_type, alt, likes, comments]
 					content_params_add.append(content_params_new)
