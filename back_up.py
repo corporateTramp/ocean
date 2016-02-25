@@ -35,7 +35,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 	#
 	time_db = 0
 	time_coll = 0
-	t_db = time.time()
+	t_db = time.clock()
 	
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
@@ -44,7 +44,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 	cur.close()
 	
 	#
-	time_db = time.time() - t_db + time_db
+	time_db = time.clock() - t_db + time_db
 	
 	# set http headers
 	header = ['Cache-Control', 'Accept', 'User-Agent', 'Referrer', 'Accept-Encoding', 'Accept-Language']
@@ -58,7 +58,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 		print "Started: " + url
 		try:
 			#
-			t_coll = time.time()
+			t_coll = time.clock()
 			
 			r = requests.get(url, headers=custom_headers)
 			soup = BeautifulSoup(r.text, 'html5lib')
@@ -125,8 +125,8 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			flag = 0
 			
 			#
-			time_coll = time.time() - t_coll + time_coll
-			t_db = time.time()
+			time_coll = time.clock() - t_coll + time_coll
+			t_db = time.clock()
 			
 			
 			for acc in range(0,len(begAccounts)):
@@ -183,7 +183,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			cur.close()
 			
 			#
-			time_db = time.time() - t_db + time_db
+			time_db = time.clock() - t_db + time_db
 
 			time.sleep(wait)
 		
@@ -197,6 +197,9 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 	
 	print "Parsing time:" , time.strftime("%H:%M:%S", time.gmtime(time_coll))
 	print "DB manipulation time:" , time.strftime("%H:%M:%S", time.gmtime(time_db))
+	print "Parsing time:" , time_coll
+	print "DB manipulation time:" , time_db
+	
 	
 	conn.close()
 
@@ -244,8 +247,8 @@ def see_table(table = "accounts", db_data="dbname=alex user=alex password=1"):
 	conn.close()
 	
 def start(link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=alex user=alex password=1"):
-	t0 = time.time()
+	t0 = time.clock()
 	urls = collect_links(link)			
 	start_init(urls, wait, db_data)
-	t1 = time.time()
+	t1 = time.clock()
 	print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
