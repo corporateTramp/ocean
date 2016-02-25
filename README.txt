@@ -22,7 +22,6 @@
 		python -c "from instagram_parser import *; функция(аргументы)"
 		например,
 		python -c "from instagram_parser import *; start()"
-		python -c "from instagram_parser import *; start()"
 	   
 Функции:
 	1. Работа с БД
