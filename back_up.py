@@ -32,11 +32,19 @@ def convert_tuple_to_unicode(data):
 
 def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 	
+	#
+	time_db = 0
+	time_coll = 0
+	t_db = time.time()
+	
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	cur.execute("SELECT name, description, private FROM accounts;")
 	begAccounts  = cur.fetchall()
 	cur.close()
+	
+	#
+	time_db = time.time() - t_db + time_db
 	
 	# set http headers
 	header = ['Cache-Control', 'Accept', 'User-Agent', 'Referrer', 'Accept-Encoding', 'Accept-Language']
@@ -49,6 +57,8 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 		
 		print "Started: " + url
 		try:
+			#
+			t_coll = time.time()
 			
 			r = requests.get(url, headers=custom_headers)
 			soup = BeautifulSoup(r.text, 'html5lib')
@@ -84,8 +94,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			if not external_url: external_url = ""
 
 			description = fullName + " " + bio + " " + external_url
-			
-			
+				
 			#parsing posts
 			content_params_add =[]
 			if private == False:
@@ -114,6 +123,11 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			account_add = (name, description, private)
 			cur = conn.cursor()
 			flag = 0
+			
+			#
+			time_coll = time.time() - t_coll + time_coll
+			t_db = time.time()
+			
 			
 			for acc in range(0,len(begAccounts)):
 				if name == (convert_tuple_to_unicode(begAccounts[acc]))[0]:
@@ -167,6 +181,9 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 			conn.commit()
 			cur.close()
+			
+			#
+			time_db = time.time() - t_db + time_db
 
 			time.sleep(wait)
 		
@@ -177,7 +194,10 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 
 			else:
 				print "Connection problem raised on", url		
-		
+	
+	print "Parsing time:" , time.strftime("%H:%M:%S", time.gmtime(time_coll))
+	print "DB manipulation time:" , time.strftime("%H:%M:%S", time.gmtime(time_db))
+	
 	conn.close()
 
 def create_tables(db_data="dbname=alex user=alex password=1"):	
