@@ -105,8 +105,6 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 						
 						content_params_new = [content_type, alt, likes, comments]
 						content_params_add.append(content_params_new)
-						content_params_new = [content_type, alt, likes, comments]
-						content_params_add.append(content_params_new)
 					except:
 						pass
 			
