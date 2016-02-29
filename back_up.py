@@ -174,8 +174,8 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 				print "Instagram denied access to", url
 			else:
 				print "Connection problem raised on", url
-		else:
-			print "Exception on link: ", url
+		#else:
+		#	print "Exception on link: ", url
 		
 	conn.close()
 
