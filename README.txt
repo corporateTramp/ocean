@@ -1,20 +1,12 @@
 ﻿К установке:
-	1. PhantomJS
-		Установка на linux-x86_64 Ubuntu
-		--------------------------------
-		wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/phantomjs/phantomjs-1.9.2-linux-x86_64.tar.bz2
-		tar xf phantomjs-1.9.2-linux-x86_64.tar.bz2
-		rm phantomjs-1.9.2-linux-x86_64.tar.bz2
-		mv phantomjs-1.9.2-linux-x86_64/ phantomjs
-	
-	2. Pip
+	1. Pip
 		Установка на linux-x86_64 Ubuntu
 		--------------------------------
 		sudo apt-get install python-pip
 		
-	3. Дополнительные модули
+	2. Дополнительные модули
 	   ---------------------------------
-	   pip install requests html5lib bs4
+	   pip install requests html5lib beautifulsoup4
 	   sudo apt-get install python-psycopg2
 
 Работа с функциями Python 2.7 через командную строку на linux-x86_64 Ubuntu
@@ -39,6 +31,3 @@
 			start([link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password =postgres"])
 
 * скрипт настроен на получение информации из базы (при обновлении) в кодировке "UTF-8", запись происходит в UNICODE
-
-Дополнительно
-	pgrep phantomjs | xargs kill
