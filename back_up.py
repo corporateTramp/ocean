@@ -30,7 +30,7 @@ def convert_tuple_to_unicode(data):
 			list.append(x)
 	return tuple(list)
 
-def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
+def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 	
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
@@ -84,7 +84,8 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			if not external_url: external_url = ""
 
 			description = fullName + " " + bio + " " + external_url
-				
+			
+			
 			#parsing posts
 			content_params_add =[]
 			if private == False:
@@ -104,8 +105,6 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 						
 						content_params_new = [content_type, alt, likes, comments]
 						content_params_add.append(content_params_new)
-						content_params_new = [content_type, alt, likes, comments]
-						content_params_add.append(content_params_new)
 					except:
 						pass
 			
@@ -113,7 +112,6 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			account_add = (name, description, private)
 			cur = conn.cursor()
 			flag = 0
-
 			
 			for acc in range(0,len(begAccounts)):
 				if name == (convert_tuple_to_unicode(begAccounts[acc]))[0]:
@@ -167,20 +165,21 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=1"):
 			cur.executemany("INSERT INTO content_params (account_id, scan_session_id, content_type, description, likes, comments, created_at) VALUES (%s, %s, %s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", content_params_add)
 			conn.commit()
 			cur.close()
-			
+
 			time.sleep(wait)
 		
 		except urllib2.HTTPError, err:
 			if err.code == 403:
 				time.sleep(20)
 				print "Instagram denied access to", url
-
 			else:
-				print "Connection problem raised on", url		
-	
+				print "Connection problem raised on", url
+		else:
+			print "Exception on link: ", url
+		
 	conn.close()
 
-def create_tables(db_data="dbname=alex user=alex password=1"):	
+def create_tables(db_data="dbname=alex user=alex password=alexdb"):	
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 
@@ -193,7 +192,7 @@ def create_tables(db_data="dbname=alex user=alex password=1"):
 	print "Created"
 	conn.close()
 
-def delete_tables(db_data="dbname=alex user=alex password=1"):		
+def delete_tables(db_data="dbname=alex user=alex password=alexdb"):		
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	cur.execute ("DROP TABLE IF EXISTS accounts, scan_sessions, content_params")
@@ -204,11 +203,11 @@ def delete_tables(db_data="dbname=alex user=alex password=1"):
 	print "Deleted"
 	conn.close()
 	
-def refresh_tables(db_data="dbname=alex user=alex password=1"):
+def refresh_tables(db_data="dbname=alex user=alex password=alexdb"):
 	delete_tables (db_data)
 	create_tables(db_data)
 	
-def see_table(table = "accounts", db_data="dbname=alex user=alex password=1"):
+def see_table(table = "accounts", db_data="dbname=alex user=alex password=alexdb"):
 	conn = psycopg2.connect(db_data)
 	cur = conn.cursor()
 	print "---------------------------------------------------------------------------------------"
@@ -223,7 +222,7 @@ def see_table(table = "accounts", db_data="dbname=alex user=alex password=1"):
 	cur.close()
 	conn.close()
 	
-def start(link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=alex user=alex password=1"):
+def start(link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=alex user=alex password=alexdb"):
 	t0 = time.time()
 	urls = collect_links(link)			
 	start_init(urls, wait, db_data)
