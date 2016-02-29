@@ -174,7 +174,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 				print "Instagram denied access to", url
 			else:
 				print "Connection problem raised on", url
-		else:
+		except:
 			print "Exception on link: ", url
 		
 	conn.close()
