@@ -9,7 +9,7 @@ import json
 def collect_links(page):
 	pages  = []
 	for i in range (1,page):
-		r = requests.get("http://www.t30p.ru/Instagram.aspx?p="&i)
+		r = requests.get("http://www.t30p.ru/Instagram.aspx?p="+str(i))
 		soup = BeautifulSoup(r.text, 'html5lib')
 	
 		for tag in soup.find_all('td',class_="name"):
