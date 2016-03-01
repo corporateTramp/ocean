@@ -6,15 +6,16 @@ import time
 import psycopg2
 import json
 
-def collect_links(link):
+def collect_links(page):
 	pages  = []
-	r = requests.get(link)
-	soup = BeautifulSoup(r.text, 'html5lib')
+	for i in range (1,page):
+		r = requests.get("http://www.t30p.ru/Instagram.aspx?p="+str(i))
+		soup = BeautifulSoup(r.text, 'html5lib')
 	
-	for tag in soup.find_all('td',class_="name"):
-		page = tag.a.get('href')
-		page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
-		pages.append(page)
+		for tag in soup.find_all('td',class_="name"):
+			page = tag.a.get('href')
+			page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
+			pages.append(page)
 	
 	print "Urls are collected"
 	
@@ -222,9 +223,9 @@ def see_table(table = "accounts", db_data="dbname=Localhosts user=postgres passw
 	cur.close()
 	conn.close()
 	
-def start(link='http://www.t30p.ru/Instagram.aspx', wait = 10, db_data="dbname=Localhosts user=postgres password=postgres"):
+def start(page=20, wait = 10, db_data="dbname=Localhosts user=postgres password=postgres"):
 	t0 = time.time()
-	urls = collect_links(link)			
+	urls = collect_links(page)			
 	start_init(urls, wait, db_data)
 	t1 = time.time()
 	print "Code execution time is:" , time.strftime("%H:%M:%S", time.gmtime(t1-t0))
