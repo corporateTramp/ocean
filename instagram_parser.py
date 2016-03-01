@@ -46,9 +46,12 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 	for i in range(1,len(header)):
 		custom_headers[header[i]] = value[i]
 	
+	counter = 1
+	
 	for url in urls:
 		
-		print "Started: " + url
+		print "Started: " + url + " (" + str(counter) +")"
+		counter = counter + 1
 		try:
 			
 			r = requests.get(url, headers=custom_headers)
