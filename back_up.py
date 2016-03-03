@@ -94,7 +94,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 			#parsing posts
 			content_params_add =[]
 			if private == False:
-				for i in range (0,10):
+				for i in range (0,9):
 					try:
 						isVideo = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["is_video"]
 						if isVideo == False:
