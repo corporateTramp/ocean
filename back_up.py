@@ -23,7 +23,7 @@ def collect_links(page):
 
 def convert_tuple_to_unicode(data):
 	list =[]
-	for dic in range(0,len(data) + 1):
+	for dic in range(0,len(data)):
 		x = data[dic]
 		if isinstance(x, basestring):
 			list.append(x.decode('utf-8'))
@@ -43,7 +43,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 	header = ['Cache-Control', 'Accept', 'User-Agent', 'Referrer', 'Accept-Encoding', 'Accept-Language']
 	value = ['no-cache','text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/ 39.0.2171.95 Safari/537.36', 'https://www.google.com/', 'gzip, deflate, sdch', 'ru-RU,en-US,en;q=0.8']
 	custom_headers={}
-	for i in range(1,len(header)+1):
+	for i in range(1,len(header)):
 		custom_headers[header[i]] = value[i]
 	
 	counter = 1
@@ -120,7 +120,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 			cur = conn.cursor()
 			flag = 0
 			
-			for acc in range(0,len(begAccounts)+1):
+			for acc in range(0,len(begAccounts)):
 				if name == (convert_tuple_to_unicode(begAccounts[acc]))[0]:
 					cur.execute("UPDATE accounts SET (name, description, private, updated_at) = (%s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP)) WHERE name = %s ;", (name, description, private, name,))
 					conn.commit()
@@ -140,7 +140,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 			cur.close()
 			
 			account_id = 999999
-			for i in range(0,len(updatedAccounts) + 1):
+			for i in range(0,len(updatedAccounts)):
 				if name == updatedAccounts[i][1].decode('utf-8'):
 					account_id = updatedAccounts[i][0]
 			
@@ -158,12 +158,12 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 			cur.close()
 			
 			scan_session_id = 999999
-			for q in range(0,len(updatedSessions) + 1):
+			for q in range(0,len(updatedSessions)):
 				if account_id == updatedSessions[q][1]:
 					scan_session_id = updatedSessions[q][0]
 					
 			##adding content params
-			for w in range(0,len(content_params_add) + 1):
+			for w in range(0,len(content_params_add)):
 				content_params_add[w].insert(0,scan_session_id)
 				content_params_add[w].insert(0,account_id)			
 			
