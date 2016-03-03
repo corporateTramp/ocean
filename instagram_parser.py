@@ -1,3 +1,4 @@
+from __future__ import division
 import requests
 import urllib2 
 import html5lib
@@ -8,7 +9,7 @@ import json
 
 def collect_links(page):
 	pages  = []
-	for i in range (1,page):
+	for i in range (1,page+1):
 		r = requests.get("http://www.t30p.ru/Instagram.aspx?p="+str(i))
 		soup = BeautifulSoup(r.text, 'html5lib')
 	
@@ -89,11 +90,12 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 
 			description = fullName + " " + bio + " " + external_url
 			
+			likes_sum = 0
 			
 			#parsing posts
 			content_params_add =[]
 			if private == False:
-				for i in range (0,9):
+				for i in range (0,10):
 					try:
 						isVideo = data["entry_data"]["ProfilePage"][0]["user"]["media"]["nodes"][i]["is_video"]
 						if isVideo == False:
@@ -109,6 +111,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 						
 						content_params_new = [content_type, alt, likes, comments]
 						content_params_add.append(content_params_new)
+						likes_sum = likes_sum + int(likes)
 					except:
 						pass
 			
@@ -141,9 +144,9 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 				if name == updatedAccounts[i][1].decode('utf-8'):
 					account_id = updatedAccounts[i][0]
 			
-			scan_sessions_add = (account_id, publications, subscribers,subscribtions)
+			scan_sessions_add = (account_id, publications, subscribers, subscriptions, likes_sum/10, likes_sum/subscribers, publications/subscribers)
 			cur = conn.cursor()
-			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscribtions, created_at) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP));", scan_sessions_add)
+			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscriptions, created_at, active_subscribers, er, avg) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), %s, %s, %s);", scan_sessions_add)
 			conn.commit()
 			cur.close()
 			
@@ -188,7 +191,7 @@ def create_tables(db_data="dbname=Localhosts user=postgres password=postgres"):
 	cur = conn.cursor()
 
 	cur.execute("CREATE TABLE accounts ( id SERIAL PRIMARY KEY, name text, description text, private bool, created_at timestamp, updated_at timestamp);")
-	cur.execute("CREATE TABLE scan_sessions ( id SERIAL PRIMARY KEY, account_id integer, publications integer,subscribers integer, subscriptions integer, created_at timestamp);")
+	cur.execute("CREATE TABLE scan_sessions ( id SERIAL PRIMARY KEY, account_id integer, publications integer,subscribers integer, subscriptions integer, created_at timestamp, active_subscribers real , er real , avg real );")
 	cur.execute("CREATE TABLE content_params ( id SERIAL PRIMARY KEY, account_id integer, scan_session_id integer,content_type text,description text, likes integer, comments integer, created_at timestamp);")
 
 	conn.commit()
