@@ -111,7 +111,7 @@ def start_init(urls, wait, db_data="dbname=alex user=alex password=alexdb"):
 						content_params_new = [content_type, alt, likes, comments]
 						content_params_add.append(content_params_new)
 						
-						likes_sum = likes_sum + likes
+						likes_sum = likes_sum + int(likes)
 					except:
 						pass
 			
