@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import time
 import psycopg2
 import json
+from __future__ import division
 
 def collect_links(page):
 	pages  = []
