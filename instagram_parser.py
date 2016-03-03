@@ -67,7 +67,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 			publications = data["entry_data"]["ProfilePage"][0]["user"]["media"]["count"]
 			name = data["entry_data"]["ProfilePage"][0]["user"]["username"]
 			subscribers = data["entry_data"]["ProfilePage"][0]["user"]["followed_by"]["count"]
-			subscribtions = data["entry_data"]["ProfilePage"][0]["user"]["follows"]["count"]
+			subscriptions = data["entry_data"]["ProfilePage"][0]["user"]["follows"]["count"]
 			try:
 				fullName = data["entry_data"]["ProfilePage"][0]["user"]["full_name"]
 			except:
@@ -188,7 +188,7 @@ def create_tables(db_data="dbname=Localhosts user=postgres password=postgres"):
 	cur = conn.cursor()
 
 	cur.execute("CREATE TABLE accounts ( id SERIAL PRIMARY KEY, name text, description text, private bool, created_at timestamp, updated_at timestamp);")
-	cur.execute("CREATE TABLE scan_sessions ( id SERIAL PRIMARY KEY, account_id integer, publications integer,subscribers integer, subscribtions integer, created_at timestamp);")
+	cur.execute("CREATE TABLE scan_sessions ( id SERIAL PRIMARY KEY, account_id integer, publications integer,subscribers integer, subscriptions integer, created_at timestamp);")
 	cur.execute("CREATE TABLE content_params ( id SERIAL PRIMARY KEY, account_id integer, scan_session_id integer,content_type text,description text, likes integer, comments integer, created_at timestamp);")
 
 	conn.commit()
