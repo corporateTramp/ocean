@@ -144,7 +144,7 @@ def start_init(urls, wait, db_data="dbname=Localhosts user=postgres password=pos
 				if name == updatedAccounts[i][1].decode('utf-8'):
 					account_id = updatedAccounts[i][0]
 			
-			scan_sessions_add = (account_id, publications, subscribers, subscriptions, likes_sum/10, likes_sum/subscribers, publications/subscribers)
+			scan_sessions_add = (account_id, publications, subscribers, subscriptions, likes_sum/10, (likes_sum/10)/subscribers, publications/subscribers)
 			cur = conn.cursor()
 			cur.execute("INSERT INTO scan_sessions(account_id, publications, subscribers, subscriptions, created_at, active_subscribers, er, avg) VALUES (%s, %s, %s, %s, date_trunc('second',CURRENT_TIMESTAMP), %s, %s, %s);", scan_sessions_add)
 			conn.commit()
