@@ -17,7 +17,8 @@ def collect_links(page):
 			page = tag.a.get('href')
 			page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 			pages.append(page)
-	
+		print "Urls are collected from page: " + str(i)
+		
 	print "Urls are collected"
 	
 	return pages
