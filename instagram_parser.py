@@ -12,12 +12,13 @@ def collect_links(page):
 	for i in range (1,page+1):
 		r = requests.get("http://www.t30p.ru/Instagram.aspx?p="+str(i))
 		soup = BeautifulSoup(r.text, 'html5lib')
-		print "Urls are collected from page: " + str(i)
-	
+		
 		for tag in soup.find_all('td',class_="name"):
 			page = tag.a.get('href')
 			page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 			pages.append(page)
+			
+		print "Urls are collected from page: " + str(i)
 	
 	print "All urls are collected"
 	
