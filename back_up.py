@@ -19,8 +19,8 @@ def collect_links(page):
 			page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 			pages.append(page)
 		
-		for i in range (1,101):
-			followers_sum += int(soup.find_all('td',class_="active")[4].text)
+		for f in range (1,101):
+			followers_sum += int(soup.find_all('td',class_="active")[f].text)
 		
 		print "Urls are collected from page: " + str(i)
 		
