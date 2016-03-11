@@ -9,6 +9,7 @@ import json
 
 def collect_links(page):
 	pages  = []
+	followers_sum = 0
 	for i in range (1,page+1):
 		r = requests.get("http://www.t30p.ru/Instagram.aspx?p="+str(i))
 		soup = BeautifulSoup(r.text, 'html5lib')
@@ -17,9 +18,14 @@ def collect_links(page):
 			page = tag.a.get('href')
 			page = str('https://www.instagram.com/'+page[(page.rfind('/')+1):])
 			pages.append(page)
+		
+		for i in range (1,101):
+			followers_sum += int(soup.find_all('td',class_="active")[4].text)
+		
 		print "Urls are collected from page: " + str(i)
 		
 	print "Urls are collected"
+	print "Total followers number: " + str (followers_sum)
 	
 	return pages
 
